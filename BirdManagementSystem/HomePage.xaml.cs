@@ -280,11 +280,11 @@ namespace BirdManagementSystem
                 addNewCageSuccess.Text = "Cage Added Successfully!";
                 DispatcherTimer timer = new DispatcherTimer();
                 timer.Interval = TimeSpan.FromSeconds(5);
-                timer.Tick += (sender, e) =>
+                /*timer.Tick += (sender, e) =>
                 {
                     addNewCageSuccess.Text = "";
                 };
-                timer.Start();
+                timer.Start();*/
                 NewCageSerialNumber.Text = "";
                 NewCageWidth.Text = "";
                 NewCageLength.Text = "";
