@@ -118,7 +118,7 @@ namespace BirdManagementSystem
             string filePath = System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, fileNmae);
             //"C:\Users\LasTa\source\repos\LoginExerciseing\LoginExerciseing\Users.xlsx"
 
-            string connectionString = @"Provider=Microsoft.ACE.OLEDB.12.0;Data Source=C:\Users\LasTa\Desktop\New Birds\BirdManagementSystem\Users.xlsx;Extended Properties='Excel 12.0 Xml;HDR=YES;'";
+            string connectionString = @"Provider=Microsoft.ACE.OLEDB.12.0;Data Source=..\..\Users.xlsx;Extended Properties='Excel 12.0 Xml;HDR=YES;'";
 
 
 
