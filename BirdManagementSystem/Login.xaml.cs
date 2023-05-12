@@ -20,6 +20,8 @@ using System.Windows.Shapes;
 using System.Xml;
 using System.Diagnostics;
 using Microsoft.Win32;
+using System.IO;
+using OfficeOpenXml;
 
 namespace BirdManagementSystem
 {
@@ -35,6 +37,14 @@ namespace BirdManagementSystem
 
         private void LoginBtn_Click(object sender, RoutedEventArgs e)
         {
+            // Read data from the Excel file
+
+
+
+
+
+
+
             Trace.WriteLine("hello world");
             string username = UserName.Text;
             string password = Password.Password;
@@ -111,6 +121,35 @@ namespace BirdManagementSystem
 
         private bool ValidateUser(string username, string password)
         {
+            var filePath = @"..\..\Users.xlsx";
+            var data = ReadUsernamesAndPasswords(filePath);
+
+            // Write data to the Excel file
+            if (data.ContainsKey(username))
+            {
+                if (data[username] == password)
+                {
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+            }
+            else
+            {
+                return false;
+            }
+
+/*
+
+
+
+
+
+
+
+
             // ...
 
             // Specify the path of the Excel file
@@ -155,11 +194,33 @@ namespace BirdManagementSystem
                 }
                 connection.Close();
             }
-            return false; // If no match found, return false
+            return false; // If no match found, return false*/
 
         }
 
+        private Dictionary<string, string> ReadUsernamesAndPasswords(string filePath)
+        {
+            var data = new Dictionary<string, string>();
 
+            // Set the EPPlus License context (needed for version 5 and later)
+            ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
+
+            using (var package = new ExcelPackage(new FileInfo(filePath)))
+            {
+                var worksheet = package.Workbook.Worksheets[0];
+
+                // Assuming the data starts at row 2 to skip the header row
+                for (int row = 2; row <= worksheet.Dimension.End.Row; row++)
+                {
+                    string username = worksheet.Cells[row, 1].Value?.ToString();
+                    string password = worksheet.Cells[row, 2].Value?.ToString();
+                    if(username!=null && password!=null)
+                        data.Add(username, password);
+                }
+            }
+
+            return data;
+        }
 
         private void ChangeColor(object sender, TextChangedEventArgs args)
         {

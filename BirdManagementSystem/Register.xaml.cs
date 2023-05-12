@@ -1,7 +1,9 @@
-﻿using System;
+﻿using OfficeOpenXml;
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.OleDb;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
@@ -98,20 +100,39 @@ namespace BirdManagementSystem
 
         private void Registiration(string user, string pass, string id)
         {
-            string fileNmae = "User.xlsx";
-            string filePath = System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, fileNmae);
+            /*            string fileNmae = "User.xlsx";
+                        string filePath = System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, fileNmae);
 
-            //"C:\Users\LasTa\source\repos\LoginExerciseing\LoginExerciseing\Users.xlsx"
-            string connectionString = @"Provider=Microsoft.ACE.OLEDB.12.0;Data Source=..\..\..\Users.xlsx;Extended Properties='Excel 12.0 Xml;HDR=YES;'";
-            using (OleDbConnection connection = new OleDbConnection(connectionString))
+                        //"C:\Users\LasTa\source\repos\LoginExerciseing\LoginExerciseing\Users.xlsx"
+                        string connectionString = @"Provider=Microsoft.ACE.OLEDB.12.0;Data Source=..\..\..\Users.xlsx;Extended Properties='Excel 12.0 Xml;HDR=YES;'";
+                        using (OleDbConnection connection = new OleDbConnection(connectionString))
+                        {
+                            connection.Open();
+                            OleDbCommand command1 = new OleDbCommand("INSERT INTO [Sheet1$] ([Username], [Password],[ID]) VALUES (@Username, @Password,@ID)", connection);
+                            command1.Parameters.AddWithValue("@Username", user); // replace "newuser" with the actual username you want to insert
+                            command1.Parameters.AddWithValue("@Password", pass);
+                            command1.Parameters.AddWithValue("@ID", id);
+                            // replace "newpassword" with the actual password you want to insert
+                            int rowsAffected = command1.ExecuteNonQuery();
+                        }*/
+
+            ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
+            string filePath = @"..\..\Users.xlsx";
+            using (var package = new ExcelPackage(new FileInfo(filePath)))
             {
-                connection.Open();
-                OleDbCommand command1 = new OleDbCommand("INSERT INTO [Sheet1$] ([Username], [Password],[ID]) VALUES (@Username, @Password,@ID)", connection);
-                command1.Parameters.AddWithValue("@Username", user); // replace "newuser" with the actual username you want to insert
-                command1.Parameters.AddWithValue("@Password", pass);
-                command1.Parameters.AddWithValue("@ID", id);
-                // replace "newpassword" with the actual password you want to insert
-                int rowsAffected = command1.ExecuteNonQuery();
+                var worksheet = package.Workbook.Worksheets[0];
+
+                // Find the next empty row
+                int newRow = worksheet.Dimension.End.Row + 1;
+
+                // Write the data
+                worksheet.Cells[newRow, 1].Value = user;
+                worksheet.Cells[newRow, 2].Value = pass;
+                worksheet.Cells[newRow, 3].Value = id;
+
+
+                // Save the changes
+                package.Save();
             }
         }
 
@@ -124,47 +145,77 @@ namespace BirdManagementSystem
 
         private bool UserExists(string username)
         {
-            string fileNmae = "User.xlsx";
-            string filePath = System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, fileNmae);
-            string excelPath = @"C:\Users\LasTa\Desktop\Users.xlsx";
-            //"C:\Users\LasTa\source\repos\LoginExerciseing\LoginExerciseing\Users.xlsx"
-            string connectionString = @"Provider=Microsoft.ACE.OLEDB.12.0;Data Source=..\..\..\Users.xlsx;Extended Properties='Excel 12.0 Xml;HDR=YES;'";
+            /*            string fileNmae = "User.xlsx";
+                        string filePath = System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, fileNmae);
+                        string excelPath = @"C:\Users\LasTa\Desktop\Users.xlsx";
+                        //"C:\Users\LasTa\source\repos\LoginExerciseing\LoginExerciseing\Users.xlsx"
+                        string connectionString = @"Provider=Microsoft.ACE.OLEDB.12.0;Data Source=..\..\..\Users.xlsx;Extended Properties='Excel 12.0 Xml;HDR=YES;'";
 
 
 
-            // Create the connection object
-            using (OleDbConnection connection = new OleDbConnection(connectionString))
+                        // Create the connection object
+                        using (OleDbConnection connection = new OleDbConnection(connectionString))
+                        {
+                            // Open the connection
+                            connection.Open();
+
+                            // Create the command object with the SQL query to read data from the worksheet
+                            OleDbCommand command = new OleDbCommand("SELECT * FROM [Sheet1$]", connection);
+
+
+
+                            // Create the data adapter object to fill a DataTable with the data from the worksheet
+                            OleDbDataAdapter dataAdapter = new OleDbDataAdapter(command);
+                            DataTable dataTable = new DataTable();
+
+                            // Fill the DataTable with the data from the worksheet
+                            dataAdapter.Fill(dataTable);
+
+                            // Loop through the rows in the DataTable and process the data
+                            foreach (DataRow row in dataTable.Rows)
+                            {
+                                string value1 = row["Username"].ToString();
+                                if (username == value1)
+                                {
+                                    connection.Close();
+                                    return true;
+
+                                }
+                                // Do something with the values...
+                            }
+                            connection.Close();
+                        }
+                        return false; // If no match found, return false*/
+            var filePath = @"..\..\Users.xlsx";
+            var data = ReadUsernamesAndPasswords(filePath);
+
+            // Write data to the Excel file
+            if (data.ContainsKey(username))
+                return true;
+            return false;
+        }
+        private Dictionary<string, string> ReadUsernamesAndPasswords(string filePath)
+        {
+            var data = new Dictionary<string, string>();
+
+            // Set the EPPlus License context (needed for version 5 and later)
+            ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
+
+            using (var package = new ExcelPackage(new FileInfo(filePath)))
             {
-                // Open the connection
-                connection.Open();
+                var worksheet = package.Workbook.Worksheets[0];
 
-                // Create the command object with the SQL query to read data from the worksheet
-                OleDbCommand command = new OleDbCommand("SELECT * FROM [Sheet1$]", connection);
-
-
-
-                // Create the data adapter object to fill a DataTable with the data from the worksheet
-                OleDbDataAdapter dataAdapter = new OleDbDataAdapter(command);
-                DataTable dataTable = new DataTable();
-
-                // Fill the DataTable with the data from the worksheet
-                dataAdapter.Fill(dataTable);
-
-                // Loop through the rows in the DataTable and process the data
-                foreach (DataRow row in dataTable.Rows)
+                // Assuming the data starts at row 2 to skip the header row
+                for (int row = 2; row <= worksheet.Dimension.End.Row; row++)
                 {
-                    string value1 = row["Username"].ToString();
-                    if (username == value1)
-                    {
-                        connection.Close();
-                        return true;
-
-                    }
-                    // Do something with the values...
+                    string username = worksheet.Cells[row, 1].Value?.ToString();
+                    string password = worksheet.Cells[row, 2].Value?.ToString();
+                    if (username != null && password != null)
+                        data.Add(username, password);
                 }
-                connection.Close();
             }
-            return false; // If no match found, return false
+
+            return data;
         }
 
         private void ChangeColor(object sender, TextChangedEventArgs args)
