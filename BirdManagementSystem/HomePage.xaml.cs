@@ -1,6 +1,7 @@
 ﻿using Microsoft.Office.Interop.Excel;
 using System;
 using System.Collections.Generic;
+using System.Data.Entity.Validation;
 using System.Diagnostics;
 using System.Linq;
 using System.Text;
@@ -191,14 +192,53 @@ namespace BirdManagementSystem
 
         private void AddBirdBtn_Click(object sender, RoutedEventArgs e)
         {
+            string[] spec = new string[] { "Goldian American", "Goldian European", "Goldian Australian" };
+            string[] gend = new string[] { "Male", "Female" };
             if (this.CageError.Text != "" || this.FatherError.Text != "" || this.MotherError.Text != "" || this.SerialError.Text != "")
             {
                 //dont add the bird some input is illegal show error
             }
             else
             {
+                string newSerialNumber = BirdSerialNumber.Text;
+                string newSpecies = spec[BirdSpecies.SelectedIndex];
+                string newSubSpecies = BirdSubspecies.SelectedItem.ToString();
+                string newGender = gend[BirdGender.SelectedIndex];
+                string newCageSerialNumber = CageSerial.Text;
+                string newFather = FatherSerial.Text;
+                string newMother = MotherSerial.Text;
+                DateTime newDate = (DateTime)HatchDate.SelectedDate;
+                Nullable<System.DateTime> d = new Nullable<System.DateTime>(newDate);
                 //Add the bird
-
+                BirdManagementDBEntities db = new BirdManagementDBEntities();
+                Bird newBird = new Bird()
+                {
+                    SerialNumber = newSerialNumber,
+                    Species = newSpecies,
+                    SubSpecies = newSubSpecies,
+                    HatchDate = d,
+                    Gender = newGender,
+                    Cage = newCageSerialNumber,
+                    Mother = newMother,
+                    Father = newFather,
+                };
+                try
+                {
+                    // Add a new Bird object to the context and save changes
+                    db.Birds.Add(newBird);
+                    db.SaveChanges();
+                }
+                catch (DbEntityValidationException ex)
+                {
+                    // Iterate over the validation errors and print them to the console
+                    foreach (var entityValidationResult in ex.EntityValidationErrors)
+                    {
+                        foreach (var validationError in entityValidationResult.ValidationErrors)
+                        {
+                            Console.WriteLine("Property: {0} Error: {1}", validationError.PropertyName, validationError.ErrorMessage);
+                        }
+                    }
+                }
 
                 //clear all the fields
                 this.BirdSerialNumber.Text = "";
@@ -250,18 +290,18 @@ namespace BirdManagementSystem
             NewCageMaterialSelectError.Text = "";
             NewCageDimensionError.Text = "";
             NewCageSerialNumberError.Text = "";
-            string serialNumber = NewCageSerialNumber.Text;
+            string newSerialNumber = NewCageSerialNumber.Text;
             string cageWidthText = NewCageWidth.Text;
             string cageLengthText = NewCageLength.Text;
             string cageHeightText = NewCageHeight.Text;
-            double cageWidth, cageLength, cageHeight;
+            double newCageWidth, newCageHeight, newCageLength;
             bool flag = true;
-            if (!checkCageSerialNumberValidation(serialNumber) || serialNumber == "")
+            if (!checkCageSerialNumberValidation(newSerialNumber) || newSerialNumber == "")
             {
                 NewCageSerialNumberError.Text = "Serial Number should contain numbers and letters only!";
                 flag = false;
             }
-            if (!(Double.TryParse(cageWidthText, out cageWidth) && Double.TryParse(cageHeightText, out cageHeight) && Double.TryParse(cageLengthText, out cageLength)))
+            if (!(Double.TryParse(cageWidthText, out newCageWidth) && Double.TryParse(cageHeightText, out newCageHeight) && Double.TryParse(cageLengthText, out newCageLength)))
             {
                 NewCageDimensionError.Text = "Dimension must be a number!";
                 flag = false;
@@ -274,17 +314,21 @@ namespace BirdManagementSystem
             if (flag)
             {
                 string matChoice = matChoiceArr[NewCageMaterialSelect.SelectedIndex];
-                //TODO
-                //add cage to db
-                //TODO
-                addNewCageSuccess.Text = "Cage Added Successfully!";
-                DispatcherTimer timer = new DispatcherTimer();
-                timer.Interval = TimeSpan.FromSeconds(5);
-                /*timer.Tick += (sender, e) =>
+                Double.TryParse(cageWidthText, out newCageWidth);
+                Double.TryParse(cageHeightText, out newCageHeight);
+                Double.TryParse(cageLengthText, out newCageLength);
+                BirdManagementDBEntities db = new BirdManagementDBEntities();
+                Cage newCage = new Cage()
                 {
-                    addNewCageSuccess.Text = "";
+                    SerialNumber = newSerialNumber,
+                    Width = newCageWidth,
+                    Length = newCageLength,
+                    Height = newCageHeight,
+                    CageMaterial = matChoice
                 };
-                timer.Start();*/
+                db.Cages.Add(newCage);
+                db.SaveChanges();
+                addNewCageSuccess.Text = "Cage Added Successfully!";
                 NewCageSerialNumber.Text = "";
                 NewCageWidth.Text = "";
                 NewCageLength.Text = "";
