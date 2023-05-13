@@ -1,0 +1,32 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+  <EntityContainerMapping StorageEntityContainer="BirdManagementDBModelStoreContainer" CdmEntityContainer="BirdManagementDBEntities">
+    <EntitySetMapping Name="Birds">
+      <EntityTypeMapping TypeName="BirdManagementDBModel.Bird">
+        <MappingFragment StoreEntitySet="Bird">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="SerialNumber" ColumnName="SerialNumber" />
+          <ScalarProperty Name="Species" ColumnName="Species" />
+          <ScalarProperty Name="SubSpecies" ColumnName="SubSpecies" />
+          <ScalarProperty Name="HatchDate" ColumnName="HatchDate" />
+          <ScalarProperty Name="Gender" ColumnName="Gender" />
+          <ScalarProperty Name="Cage" ColumnName="Cage" />
+          <ScalarProperty Name="Mother" ColumnName="Mother" />
+          <ScalarProperty Name="Father" ColumnName="Father" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Cages">
+      <EntityTypeMapping TypeName="BirdManagementDBModel.Cage">
+        <MappingFragment StoreEntitySet="Cage">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="SerialNumber" ColumnName="SerialNumber" />
+          <ScalarProperty Name="Width" ColumnName="Width" />
+          <ScalarProperty Name="Length" ColumnName="Length" />
+          <ScalarProperty Name="Height" ColumnName="Height" />
+          <ScalarProperty Name="CageMaterial" ColumnName="CageMaterial" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+  </EntityContainerMapping>
+</Mapping>

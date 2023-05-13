@@ -1,0 +1,32 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="BirdManagementDBModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2008" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+  <EntityType Name="Bird">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="SerialNumber" Type="varchar" MaxLength="50" />
+    <Property Name="Species" Type="varchar" MaxLength="50" />
+    <Property Name="SubSpecies" Type="varchar" MaxLength="50" />
+    <Property Name="HatchDate" Type="date" />
+    <Property Name="Gender" Type="varchar" MaxLength="50" />
+    <Property Name="Cage" Type="varchar" MaxLength="50" />
+    <Property Name="Mother" Type="varchar" MaxLength="50" />
+    <Property Name="Father" Type="varchar" MaxLength="50" />
+  </EntityType>
+  <EntityType Name="Cage">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="SerialNumber" Type="varchar" MaxLength="50" />
+    <Property Name="Width" Type="float" Nullable="false" />
+    <Property Name="Length" Type="float" Nullable="false" />
+    <Property Name="Height" Type="float" Nullable="false" />
+    <Property Name="CageMaterial" Type="varchar" MaxLength="50" />
+  </EntityType>
+  <EntityContainer Name="BirdManagementDBModelStoreContainer">
+    <EntitySet Name="Bird" EntityType="Self.Bird" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Cage" EntityType="Self.Cage" Schema="dbo" store:Type="Tables" />
+  </EntityContainer>
+</Schema>
