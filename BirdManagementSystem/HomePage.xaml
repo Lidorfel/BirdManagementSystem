@@ -139,7 +139,42 @@
                             FontSize="14"  />
                     </StackPanel>
                 </TabItem.Header>
-                <Grid Background="#FFE5E5E5"/>
+                <Grid>
+                    <TextBlock HorizontalAlignment="Left"  TextWrapping="Wrap" Text="Search Bird" VerticalAlignment="Top" Height="63" Width="410" Foreground="#FFFE8704" TextAlignment="Center" FontSize="40" FontWeight="SemiBold" Margin="98,10,0,0" >
+                        <TextBlock.Effect>
+                            <DropShadowEffect/>
+                        </TextBlock.Effect>
+                    </TextBlock>
+
+
+                    <TextBox x:Name="SearchBirdSN" materialDesign:HintAssist.Hint="Bird Serial Number"  Foreground="white" BorderBrush="white" CaretBrush="#FFD94448" SelectionBrush="#ffd94448" Margin="29,90,533,330"/>
+                    <ComboBox x:Name="BirdSpeciesFind" Margin="175,90,367,0" materialDesign:HintAssist.Hint="Bird Species" Height="30" BorderBrush="white" VerticalAlignment="Top" >
+                        <ComboBoxItem>Goldian American</ComboBoxItem>
+                        <ComboBoxItem>Goldian European</ComboBoxItem>
+                        <ComboBoxItem>Goldian Australian</ComboBoxItem>
+                    </ComboBox>
+                    <DatePicker  DateValidationError="validateDate" x:Name="BirdHatchDate" Foreground="#FFFE8704" materialDesign:HintAssist.Hint="Bird Hatch Date" Height="30" BorderBrush="white" VerticalAlignment="Top" Margin="343,90,198,0" />
+                    <ComboBox x:Name="BirdGenderFind" Margin="513,90,92,0" materialDesign:HintAssist.Hint="Bird Gender" Height="30" BorderBrush="white" VerticalAlignment="Top">
+                        <ComboBoxItem>Male</ComboBoxItem>
+                        <ComboBoxItem>Female</ComboBoxItem>
+                    </ComboBox>
+                    <Button x:Name="SearchBirdBtn" Content="🔍"  Background="#FFFE8704" Margin="625,90,10,328" Foreground="#DDFFFFFF" Click="SearchBirdBtn_Click" >
+                        <Button.Effect>
+                            <DropShadowEffect/>
+                        </Button.Effect>
+                    </Button>
+                    <DataGrid Visibility="Collapsed" x:Name="BirdSearchTable" d:ItemsSource="{d:SampleData ItemCount=0}" Margin="29,133,123,85" RenderTransformOrigin="0.51,0.963" >
+                        <DataGrid.Background>
+                            <LinearGradientBrush EndPoint="0.5,4" StartPoint="0.5,0" SpreadMethod="Pad">
+                                <GradientStop Color="#FF0C0C4C" Offset="0.285"/>
+                                <GradientStop Color="#FFFE8704" Offset="0.234"/>
+                                <GradientStop Color="#FF0C0C4C" Offset="0.25"/>
+                            </LinearGradientBrush>
+                        </DataGrid.Background>
+
+                    </DataGrid>
+                    <TextBlock FontFamily="Eras ITC" x:Name="NoResultsFoundB" Visibility="Collapsed" Text="No Results Match Your Search 😟" Margin="56,225,103,180" FontWeight="Bold" FontSize="30" Foreground="#FFEE1A1A"/>
+                </Grid>
             </TabItem>
             <TabItem x:Name ="searchCage" Foreground="White" Height="73" >
                 <TabItem.Header>
@@ -150,23 +185,33 @@
                     </StackPanel>
                 </TabItem.Header>
                 <Grid>
-                    <TextBlock HorizontalAlignment="Center" FontFamily="Eras ITC" TextWrapping="Wrap" Text="Search Cage" VerticalAlignment="Top" Height="63" Width="410" Foreground="#FFCC6E06" TextAlignment="Center" FontSize="40" FontWeight="SemiBold" Margin="0,17,0,0" >
+                    <TextBlock HorizontalAlignment="Left"  TextWrapping="Wrap" Text="Search Cage" VerticalAlignment="Top" Height="63" Width="410" Foreground="#FFFE8704" TextAlignment="Center" FontSize="40" FontWeight="SemiBold" Margin="98,10,0,0" >
                         <TextBlock.Effect>
                             <DropShadowEffect/>
                         </TextBlock.Effect>
                     </TextBlock>
-                    <TextBox x:Name="SearchCageSN" materialDesign:HintAssist.Hint="Cage Serial Number"  Foreground="white" BorderBrush="white" CaretBrush="#FFD94448" SelectionBrush="#ffd94448" Margin="74,97,417,330"/>
-                    <ComboBox x:Name="SearchCageMaterial" HorizontalAlignment="Left" VerticalAlignment="Top" Width="196" BorderBrush="White" materialDesign:HintAssist.Hint="Cage Material" Margin="328,97,0,0">
+                    <TextBox x:Name="SearchCageSN" materialDesign:HintAssist.Hint="Cage Serial Number"  Foreground="white" BorderBrush="white" CaretBrush="#FFD94448" SelectionBrush="#ffd94448" Margin="29,88,463,330"/>
+                    <ComboBox x:Name="SearchCageMaterial" HorizontalAlignment="Left" VerticalAlignment="Top" Width="196" BorderBrush="White" materialDesign:HintAssist.Hint="Cage Material" Margin="289,88,0,0" Height="32">
                         <ComboBoxItem Content="Iron"/>
                         <ComboBoxItem Content="Wood"/>
                         <ComboBoxItem Content="Plastic"/>
                     </ComboBox>
-                    <Button x:Name="SearchCageBtn" Content="Search" Background="#FFCC6E06" Margin="554,93,48,325" Foreground="#DDFFFFFF">
+                    <Button x:Name="SearchCageBtn" Content="Search 🔍" Background="#FFFE8704" Margin="530,88,49,330" Foreground="#DDFFFFFF" Click="SearchCageBtn_Click">
                         <Button.Effect>
                             <DropShadowEffect/>
                         </Button.Effect>
                     </Button>
-                    <DataGrid x:Name="SearchCageResults" Margin="0,157,0,0" Background="Transparent" Visibility="Collapsed"/>
+                    <DataGrid Visibility="Collapsed" x:Name="CageSearchTable" d:ItemsSource="{d:SampleData ItemCount=0}" Margin="29,133,123,85" RenderTransformOrigin="0.51,0.963" >
+                        <DataGrid.Background>
+                            <LinearGradientBrush EndPoint="0.5,4" StartPoint="0.5,0" SpreadMethod="Pad">
+                                <GradientStop Color="#FF0C0C4C" Offset="0.285"/>
+                                <GradientStop Color="#FFFE8704" Offset="0.234"/>
+                                <GradientStop Color="#FF0C0C4C" Offset="0.25"/>
+                            </LinearGradientBrush>
+                        </DataGrid.Background>
+
+                    </DataGrid>
+                    <TextBlock FontFamily="Eras ITC" x:Name="NoResultsFound" Visibility="Collapsed" Text="No Results Match Your Search 😟" Margin="56,225,103,180" FontWeight="Bold" FontSize="30" Foreground="#FFEE1A1A"/>
                 </Grid>
             </TabItem>
             <TabItem x:Name="ExitBtn" Height="77" Selector.Selected="ExitBtn_Click">>

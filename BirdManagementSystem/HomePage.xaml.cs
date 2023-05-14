@@ -341,5 +341,173 @@ namespace BirdManagementSystem
         {
             return sn.All(c => Char.IsLetter(c) || Char.IsNumber(c)) && sn.Any(Char.IsLetter) && sn.Any(Char.IsNumber);
         }
+
+        private void SearchCageBtn_Click(object sender, RoutedEventArgs e)
+        {
+
+            bool InfoFound = false;
+            string SelectedCageMat;
+            bool notBoth = true;
+            ComboBoxItem typeItem = (ComboBoxItem)SearchCageMaterial.SelectedItem;
+            Trace.WriteLine(typeItem);
+            if (typeItem != null)
+                SelectedCageMat = typeItem.Content.ToString();
+            else
+                SelectedCageMat = null;
+
+            string SelectedCageSerial = SearchCageSN.Text;
+            Trace.WriteLine(SelectedCageSerial);
+            BirdManagementDBEntities db = new BirdManagementDBEntities();
+            var cages = from d in db.Cages
+                        select d;
+
+            //this.CageSearchTable.ItemsSource = new LinkedList<Cage>();
+            List<Cage> ReactiveList = new List<Cage>(); ;
+
+            foreach (var item in cages)
+            {
+                //Cage info
+                String cageMaterial = item.CageMaterial;
+                String CageSerialNum = item.SerialNumber.ToString();
+
+
+                //check if input is inserted
+                if (SelectedCageMat == null)
+                {
+                    //we do the search with serial number
+                    if (SelectedCageSerial == "")
+                    {
+                        //we show all the results
+                        InfoFound = true;
+                        notBoth = false;
+                        this.CageSearchTable.ItemsSource = cages.ToList();
+                        this.CageSearchTable.IsReadOnly = true;
+                        CageSearchTable.Visibility = Visibility.Visible;
+                    }
+                    else
+                    {
+
+
+                        //we show according to cage serial number
+                        if (CageSerialNum == SelectedCageSerial)
+                        {
+
+                            InfoFound = true;
+                            ReactiveList.Add(item);
+                        }
+
+                    }
+                }
+                else
+                {
+
+                    //we show according to cage material but we also check if there is cage serial
+                    if (SelectedCageSerial == "")
+                    {
+
+                        //we show according to cage material
+                        if (cageMaterial == SelectedCageMat)
+                        {
+                            InfoFound = true;
+                            ReactiveList.Add(item);
+                        }
+                    }
+                    else
+                    {
+                        //we show according to both cage serial and material
+                        if (cageMaterial == SelectedCageMat && CageSerialNum == SelectedCageSerial)
+                        {
+                            InfoFound = true;
+                            ReactiveList.Add(item);
+
+                        }
+                    }
+                }
+
+            }
+
+            if (ReactiveList != null)
+            {
+                ReactiveList.Sort((c1, c2) => c2.SerialNumber.CompareTo(c1.SerialNumber));
+            }
+            if (!InfoFound)
+            {
+                CageSearchTable.Visibility = Visibility.Collapsed;
+                NoResultsFound.Visibility = Visibility.Visible;
+            }
+            else
+            {
+                CageSearchTable.Visibility = Visibility.Visible;
+                NoResultsFound.Visibility = Visibility.Collapsed;
+            }
+            if (notBoth)
+            {
+                this.CageSearchTable.ItemsSource = ReactiveList;
+                this.CageSearchTable.IsReadOnly = true;
+            }
+            else
+            {
+                List<Cage> newList = new List<Cage>();
+                newList = cages.ToList();
+                newList.Sort((c1, c2) => c2.SerialNumber.CompareTo(c1.SerialNumber));
+                this.CageSearchTable.ItemsSource = newList;
+                this.CageSearchTable.IsReadOnly = true;
+            }
+        }
+
+        private void SearchBirdBtn_Click(object sender, RoutedEventArgs e)
+        {
+            bool InfoFound = false;
+            string SelectedBirdSpecies;
+            string SelectedBirdGender;
+            string BirdSN = SearchBirdSN.Text;
+            DateTime? newDate = BirdHatchDate.SelectedDate as DateTime?;
+
+            //Nullable<System.DateTime> d = new Nullable<System.DateTime>(newDate);
+            bool notAll = true;
+
+            ComboBoxItem typeItem = (ComboBoxItem)BirdSpeciesFind.SelectedItem;
+            Trace.WriteLine(typeItem);
+            if (typeItem != null)
+                SelectedBirdSpecies = typeItem.Content.ToString();
+            else
+                SelectedBirdSpecies = "";
+
+
+
+            ComboBoxItem typeItem1 = (ComboBoxItem)BirdGenderFind.SelectedItem;
+            Trace.WriteLine(typeItem);
+            if (typeItem1 != null)
+                SelectedBirdGender = typeItem1.Content.ToString();
+            else
+                SelectedBirdGender = "";
+
+            BirdManagementDBEntities db = new BirdManagementDBEntities();
+            var birds = from b in db.Birds
+                        select b;
+
+            //this.CageSearchTable.ItemsSource = new LinkedList<Cage>();
+            List<Bird> ReactiveList = new List<Bird>(); ;
+
+            foreach (var item in birds)
+            {
+                if (newDate == null)
+                    Trace.WriteLine("New Date is" + newDate);
+                if (BirdSN == null)
+                    Trace.WriteLine("birdsn is null");
+                if (SelectedBirdSpecies == null)
+                    Trace.WriteLine("birdspecies is null");
+                if (newDate == null && BirdSN == "" && SelectedBirdSpecies == "" && SelectedBirdGender == "")
+                {
+                    Trace.WriteLine("entered the if&&&&&&");
+                    //search to all fields
+                    InfoFound = true;
+                    notAll = false;
+                    this.BirdSearchTable.ItemsSource = birds.ToList();
+                    this.BirdSearchTable.IsReadOnly = true;
+                    BirdSearchTable.Visibility = Visibility.Visible;
+                }
+            }
+        }
     }
 }
