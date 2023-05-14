@@ -1,0 +1,95 @@
+﻿<Window x:Class="BirdManagementSystem.CageWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:BirdManagementSystem"
+        mc:Ignorable="d"
+        TextElement.Foreground="{DynamicResource MaterialDesignLightForeground}"
+        TextElement.FontWeight="Regular"
+        TextElement.FontSize="13"
+        TextOptions.TextFormattingMode="Ideal"
+        TextOptions.TextRenderingMode="Auto"
+        Background="Transparent"
+        FontFamily="{DynamicResource MaterialDesignFont}"
+        Title="CageWindow" Height="450" Width="800" WindowStartupLocation="CenterScreen" AllowsTransparency="True" WindowStyle="None" ResizeMode="NoResize" >
+    <Grid>
+
+        <Grid.Background >
+            <LinearGradientBrush StartPoint="0.1,0" EndPoint="0.9,1">
+                <GradientStop Color="#dc4c3c" Offset="1"/>
+                <GradientStop Color="#FFFE8704"></GradientStop>
+            </LinearGradientBrush>
+
+        </Grid.Background>
+        <Border Height="390" Width="800" VerticalAlignment="Top" CornerRadius="0 0 180 0" Background="#0c0c4c" />
+
+
+        <TextBlock HorizontalAlignment="Center" FontFamily="Eras ITC" Margin="0,27,0,0" TextWrapping="Wrap" Text="Cage Page" VerticalAlignment="Top" Height="63" Width="410" Foreground="#FFCC6E06" TextAlignment="Center" FontSize="40" FontWeight="SemiBold" >
+            <TextBlock.Effect>
+                <DropShadowEffect/>
+            </TextBlock.Effect>
+        </TextBlock>
+        <TextBlock TextWrapping="Wrap" Text="Cage Serial Number : " Margin="82,101,571,305" Foreground="#DDFFFFFF" IsEnabled="False"/>
+        <StackPanel/>
+        <TextBlock TextWrapping="Wrap" Text="Dimensions : " Margin="314,101,339,305" Foreground="#DDFFFFFF" IsEnabled="False"/>
+        <Grid>
+
+            <Grid.Background >
+                <LinearGradientBrush StartPoint="0.1,0" EndPoint="0.9,1">
+                    <GradientStop Color="#dc4c3c" Offset="1"/>
+                    <GradientStop Color="#FFFE8704"/>
+                </LinearGradientBrush>
+
+            </Grid.Background>
+            <Border Height="390" Width="800" VerticalAlignment="Top" CornerRadius="0 0 180 0" Background="#0c0c4c" >
+
+            </Border>
+
+
+            <TextBlock HorizontalAlignment="Center" FontFamily="Eras ITC" Margin="0,27,0,0" TextWrapping="Wrap" Text="Cage Page" VerticalAlignment="Top" Height="63" Width="410" Foreground="#FFCC6E06" TextAlignment="Center" FontSize="40" FontWeight="SemiBold" >
+                <TextBlock.Effect>
+                    <DropShadowEffect/>
+                </TextBlock.Effect>
+            </TextBlock>
+            <TextBlock TextWrapping="Wrap" Text="Cage Serial Number : " Margin="22,129,628,264" Foreground="#DDFFFFFF" IsEnabled="False"/>
+            <StackPanel/>
+            <TextBlock TextWrapping="Wrap" Text="Dimensions : " Margin="22,175,692,217" Foreground="#DDFFFFFF" IsEnabled="False"/>
+            <TextBlock TextWrapping="Wrap" Text="Material : " Margin="22,222,700,163" Foreground="#DDFFFFFF" IsEnabled="False"/>
+            <TextBlock x:Name="CageSN" TextWrapping="Wrap" Margin="172,129,548,264" Foreground="#DDBDBDBD" IsEnabled="False"/>
+            <TextBlock x:Name="CageDimension" TextWrapping="Wrap" Margin="108,175,565,212" Foreground="#DDBDBDBD" IsEnabled="False"/>
+            <TextBlock x:Name="CageMaterial" TextWrapping="Wrap" Margin="100,222,614,163" Foreground="#DDBDBDBD" IsEnabled="False"/>
+
+
+        </Grid>
+        <Button x:Name="ShowBirdsBtn" Content="Show Birds" Margin="23,249,604,96" Background="#FFCC6E06" Foreground="#DDFFFFFF" Click="ShowBirdsBtn_Click"/>
+        <Image x:Name="CagePicture" Visibility="Visible" Source="Images/CageImage.png" RenderTransformOrigin="0.5,0.5" Opacity="0.7" Height="198" Width="198" Margin="466,101,136,135" >
+            <Image.Effect>
+                <DropShadowEffect/>
+            </Image.Effect>
+            <Image.RenderTransform>
+                <TransformGroup>
+                    <ScaleTransform ScaleX="-1"/>
+                    <SkewTransform/>
+                    <RotateTransform/>
+                    <TranslateTransform/>
+                </TransformGroup>
+            </Image.RenderTransform>
+        </Image>
+
+        <DataGrid Visibility="Collapsed" x:Name="BirdsInCageGrid" d:ItemsSource="{d:SampleData ItemCount=0}" Margin="236,111,39,107" RenderTransformOrigin="0.51,0.963" SelectionChanged="BirdsInCageGrid_SelectionChanged" >
+            <DataGrid.Background>
+                <LinearGradientBrush EndPoint="0.5,4" StartPoint="0.5,0" SpreadMethod="Pad">
+                    <GradientStop Color="#FF0C0C4C" Offset="0.285"/>
+                    <GradientStop Color="#FFCC6E06" Offset="0.234"/>
+                    <GradientStop Color="#FF0C0C4C" Offset="0.25"/>
+                </LinearGradientBrush>
+            </DataGrid.Background>
+
+        </DataGrid>
+        <Button x:Name="backToHomePage" Content="Home Page" Margin="23,325,604,44" Background="#FFCC6E06" Foreground="#DDFFFFFF" Click="backToHomePage_Click"/>
+
+
+    </Grid>
+</Window>

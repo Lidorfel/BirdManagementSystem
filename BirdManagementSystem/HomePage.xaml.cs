@@ -24,12 +24,13 @@ namespace BirdManagementSystem
     /// </summary>
     public partial class HomePage : System.Windows.Window
     {
+        
         private bool BirdCantAdvance = true;
         private bool BirdCantAdvance1 = true;
         private bool BirdCantAdvance2 = true;
         private bool BirdCantAdvance3 = true;
         private bool BirdCantAdvance4 = true;
-
+        
         public HomePage()
         {
             InitializeComponent();
@@ -420,7 +421,7 @@ namespace BirdManagementSystem
                         select d;
 
             //this.CageSearchTable.ItemsSource = new LinkedList<Cage>();
-            List<Cage> ReactiveList = new List<Cage>(); ;
+            List<Cage> ReactiveList = new List<Cage>();
 
             foreach (var item in cages)
             {
@@ -438,9 +439,9 @@ namespace BirdManagementSystem
                         //we show all the results
                         InfoFound = true;
                         notBoth = false;
-                        this.CageSearchTable.ItemsSource = cages.ToList();
-                        this.CageSearchTable.IsReadOnly = true;
-                        CageSearchTable.Visibility = Visibility.Visible;
+                        /*                        this.CageSearchTable.ItemsSource = cages.ToList();
+                                                this.CageSearchTable.IsReadOnly = true;
+                                                CageSearchTable.Visibility = Visibility.Visible;*/
                     }
                     else
                     {
@@ -484,7 +485,7 @@ namespace BirdManagementSystem
 
             }
 
-            if (ReactiveList != null)
+            if (ReactiveList.Count > 0)
             {
                 ReactiveList.Sort((c1, c2) => c2.SerialNumber.CompareTo(c1.SerialNumber));
             }
@@ -500,19 +501,40 @@ namespace BirdManagementSystem
             }
             if (notBoth)
             {
-                this.CageSearchTable.ItemsSource = ReactiveList;
-                this.CageSearchTable.IsReadOnly = true;
+                if (ReactiveList.Count > 1 && ReactiveList.Count!=0)
+                {
+                    this.CageSearchTable.ItemsSource = ReactiveList;
+                    this.CageSearchTable.IsReadOnly = true;
+                }
+                else
+                {
+                    Cage c = ((Cage)ReactiveList[0]);
+                    CageWindow page = new CageWindow(c);
+                    page.Show();
+                    this.Close();
+                }
+
             }
             else
             {
                 List<Cage> newList = new List<Cage>();
                 newList = cages.ToList();
-                newList.Sort((c1, c2) => c2.SerialNumber.CompareTo(c1.SerialNumber));
-                this.CageSearchTable.ItemsSource = newList;
-                this.CageSearchTable.IsReadOnly = true;
+                if (newList.Count > 1 && newList.Count != 0)
+                {
+                    newList.Sort((c1, c2) => c2.SerialNumber.CompareTo(c1.SerialNumber));
+                    this.CageSearchTable.ItemsSource = newList;
+                    this.CageSearchTable.IsReadOnly = true;
+                }
+                else
+                {
+                    Cage c = ((Cage)newList[0]);
+                    CageWindow page = new CageWindow(c);
+                    page.Show();
+                    this.Close();
+                }
             }
         }
-
+            
         private void SearchBirdBtn_Click(object sender, RoutedEventArgs e)
         {
             bool InfoFound = false;
@@ -730,10 +752,20 @@ namespace BirdManagementSystem
             }
             else
             {
-                this.BirdSearchTable.ItemsSource = ReactiveList;
-                this.BirdSearchTable.IsReadOnly = true;
-                BirdSearchTable.Visibility = Visibility.Visible;
-                NoResultsFoundB.Visibility = Visibility.Collapsed;
+                if (ReactiveList.Count > 1 && ReactiveList.Count != 0)
+                {
+                    this.BirdSearchTable.ItemsSource = ReactiveList;
+                    this.BirdSearchTable.IsReadOnly = true;
+                    BirdSearchTable.Visibility = Visibility.Visible;
+                    NoResultsFoundB.Visibility = Visibility.Collapsed;
+                }
+                else
+                {
+                    Bird b = ((Bird)ReactiveList[0]);
+                    BirdWindow page= new BirdWindow(b);
+                    page.Show();
+                    this.Close();
+                }
             }
             
         }
@@ -747,6 +779,40 @@ namespace BirdManagementSystem
             List<Cage> check = cages.ToList();
             return check.Count > 0;
             
+        }
+
+        private void CageSearchTable_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (this.CageSearchTable.SelectedIndex >= 0 && this.CageSearchTable.SelectedItems.Count >= 0)
+            {
+                if (this.CageSearchTable.SelectedItems[0].GetType() == typeof(Cage))
+                {
+                    Cage t = (Cage)this.CageSearchTable.SelectedItems[0];
+                    CageWindow page = new CageWindow(t);
+
+                    // Set the content of a Frame control on the parent window or page
+                    page.Show();
+                    this.Close();
+                    /*mainPage.mainFrame.Content = page;*/
+                }
+            }
+        }
+
+        private void BirdSearchTable_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (this.BirdSearchTable.SelectedIndex >= 0 && this.BirdSearchTable.SelectedItems.Count >= 0)
+            {
+                if (this.BirdSearchTable.SelectedItems[0].GetType() == typeof(Bird))
+                {
+                    Bird b = (Bird)this.BirdSearchTable.SelectedItems[0];
+                    BirdWindow page = new BirdWindow(b);
+
+                    // Set the content of a Frame control on the parent window or page
+                    page.Show();
+                    this.Close();
+                    /*mainPage.mainFrame.Content = page;*/
+                }
+            }
         }
     }
 }

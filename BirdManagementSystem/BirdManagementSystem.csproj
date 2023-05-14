@@ -225,8 +225,14 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>BirdManagementSystemModels.edmx</DependentUpon>
     </Compile>
+    <Compile Include="BirdWindow.xaml.cs">
+      <DependentUpon>BirdWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Cage.cs">
       <DependentUpon>BirdManagementSystemModels.tt</DependentUpon>
+    </Compile>
+    <Compile Include="CageWindow.xaml.cs">
+      <DependentUpon>CageWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="HomePage.xaml.cs">
       <DependentUpon>HomePage.xaml</DependentUpon>
@@ -276,6 +282,14 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
+    <Page Include="BirdWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="CageWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="HomePage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

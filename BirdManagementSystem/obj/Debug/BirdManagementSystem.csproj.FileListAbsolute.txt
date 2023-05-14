@@ -206,3 +206,7 @@ C:\Users\LasTa\Desktop\BirdProj\BirdManagementSystem\obj\Debug\BirdManagementSys
 C:\Users\LasTa\Desktop\BirdProj\BirdManagementSystem\obj\Debug\BirdManagementSystem.csproj.CopyComplete
 C:\Users\LasTa\Desktop\BirdProj\BirdManagementSystem\obj\Debug\BirdManagementSystem.exe
 C:\Users\LasTa\Desktop\BirdProj\BirdManagementSystem\obj\Debug\BirdManagementSystem.pdb
+C:\Users\lidor\Source\Repos\BirdManagementSystem\BirdManagementSystem\obj\Debug\BirdWindow.g.cs
+C:\Users\lidor\Source\Repos\BirdManagementSystem\BirdManagementSystem\obj\Debug\CageWindow.g.cs
+C:\Users\lidor\Source\Repos\BirdManagementSystem\BirdManagementSystem\obj\Debug\BirdWindow.baml
+C:\Users\lidor\Source\Repos\BirdManagementSystem\BirdManagementSystem\obj\Debug\CageWindow.baml
