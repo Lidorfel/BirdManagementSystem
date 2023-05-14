@@ -77,6 +77,7 @@
                     <TextBlock x:Name="MotherError" TextWrapping="Wrap" Text="" Margin="323,335,117,83" Foreground="#FFEF1717"/>
                     <Button Height="40" Style="{StaticResource MaterialDesignRaisedButton}" Content="Add 🐦" materialDesign:ButtonAssist.CornerRadius="10" BorderThickness="2" BorderBrush="#0c0c4c" Background="#0c0c4c" Foreground="White"  ToolTip="Add" x:Name="AddBirdBtn" Click="AddBirdBtn_Click"  Margin="227,395,311,15">
                     </Button>
+                    <TextBlock x:Name="DateError" TextWrapping="Wrap" Text="" Margin="323,181,114,236" Foreground="#FFEF1717"/>
                 </Grid>
             </TabItem>
             <TabItem x:Name ="addCage" Foreground="White" Height="73" >
@@ -149,12 +150,14 @@
 
                     <TextBox x:Name="SearchBirdSN" materialDesign:HintAssist.Hint="Bird Serial Number"  Foreground="white" BorderBrush="white" CaretBrush="#FFD94448" SelectionBrush="#ffd94448" Margin="29,90,533,330"/>
                     <ComboBox x:Name="BirdSpeciesFind" Margin="175,90,367,0" materialDesign:HintAssist.Hint="Bird Species" Height="30" BorderBrush="white" VerticalAlignment="Top" >
+                        <ComboBoxItem></ComboBoxItem>
                         <ComboBoxItem>Goldian American</ComboBoxItem>
                         <ComboBoxItem>Goldian European</ComboBoxItem>
                         <ComboBoxItem>Goldian Australian</ComboBoxItem>
                     </ComboBox>
                     <DatePicker  DateValidationError="validateDate" x:Name="BirdHatchDate" Foreground="#FFFE8704" materialDesign:HintAssist.Hint="Bird Hatch Date" Height="30" BorderBrush="white" VerticalAlignment="Top" Margin="343,90,198,0" />
                     <ComboBox x:Name="BirdGenderFind" Margin="513,90,92,0" materialDesign:HintAssist.Hint="Bird Gender" Height="30" BorderBrush="white" VerticalAlignment="Top">
+                        <ComboBoxItem></ComboBoxItem>
                         <ComboBoxItem>Male</ComboBoxItem>
                         <ComboBoxItem>Female</ComboBoxItem>
                     </ComboBox>

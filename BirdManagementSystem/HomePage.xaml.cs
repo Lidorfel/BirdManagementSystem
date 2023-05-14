@@ -24,6 +24,12 @@ namespace BirdManagementSystem
     /// </summary>
     public partial class HomePage : System.Windows.Window
     {
+        private bool BirdCantAdvance = true;
+        private bool BirdCantAdvance1 = true;
+        private bool BirdCantAdvance2 = true;
+        private bool BirdCantAdvance3 = true;
+        private bool BirdCantAdvance4 = true;
+
         public HomePage()
         {
             InitializeComponent();
@@ -52,16 +58,19 @@ namespace BirdManagementSystem
             {
                 Trace.WriteLine("entered goldian american");
                 choices = new List<string> { "North America", "Central America", "South America" };
+                BirdCantAdvance4 = false;
 
             }
             else if (BirdSpecies.SelectedIndex == 1)
             {
                 //BirdSubspecies = new ComboBox();
                 choices = new List<string> { "Eastern Europe", "Western Europe" };
+                BirdCantAdvance4 = false;
 
             }
             else
             {
+                BirdCantAdvance4 = false;
                 choices = new List<string> { "Central Australia", "Coastal Cities" };
             }
             BirdSubspecies.ItemsSource = choices;
@@ -77,12 +86,14 @@ namespace BirdManagementSystem
                 BirdSerialNumber.Background = Brushes.Transparent;
                 SerialError.Text = "";
                 flag = false;
+                
             }
 
             if (!Regex.IsMatch(this.BirdSerialNumber.Text, @"^[0-9]+$"))
             {
                 this.SerialError.Text = "Serial Number consists of only numbers";
                 flag = true;
+              
             }
             if (flag)
             {
@@ -92,7 +103,7 @@ namespace BirdManagementSystem
             }
             else
             {
-
+                BirdCantAdvance = false;
                 this.SerialError.Text = "";
                 BirdSerialNumber.BorderBrush = Brushes.Orange;
                 BirdSerialNumber.Background = Brushes.Transparent;
@@ -107,11 +118,19 @@ namespace BirdManagementSystem
             {
                 CageSerial.Background = Brushes.Transparent;
                 CageError.Text = "";
+              
             }
             if (!Regex.IsMatch(this.CageSerial.Text, @"^[a-zA-Z0-9]+$"))
             {
                 this.CageError.Text = "Cage Serial Number consists of only numbers and letters";
                 flag = true;
+               
+            }
+            if (!cageExists(CageSerial.Text))
+            {
+                this.CageError.Text = "Cage does'nt exist";
+                flag = true;
+              
             }
             if (flag)
             {
@@ -121,7 +140,7 @@ namespace BirdManagementSystem
             }
             else
             {
-
+                BirdCantAdvance1 = false;
                 this.CageError.Text = "";
                 CageSerial.BorderBrush = Brushes.Orange;
                 CageSerial.Background = Brushes.Transparent;
@@ -136,12 +155,14 @@ namespace BirdManagementSystem
             {
                 FatherSerial.Background = Brushes.Transparent;
                 FatherError.Text = "";
+               
             }
 
             if (!Regex.IsMatch(this.FatherSerial.Text, @"^[0-9]+$"))
             {
                 this.FatherError.Text = "Father Serial Number consists of only numbers";
                 flag = true;
+            
             }
             if (flag)
             {
@@ -151,7 +172,7 @@ namespace BirdManagementSystem
             }
             else
             {
-
+                BirdCantAdvance2 = false;
                 this.FatherError.Text = "";
                 FatherSerial.BorderBrush = Brushes.Orange;
                 FatherSerial.Background = Brushes.Transparent;
@@ -166,22 +187,21 @@ namespace BirdManagementSystem
             {
                 MotherSerial.Background = Brushes.Transparent;
                 MotherError.Text = "";
+             
             }
             if (!Regex.IsMatch(this.MotherSerial.Text, @"^[0-9]+$"))
             {
                 this.MotherError.Text = "Mother Serial Number consists of only numbers";
                 flag = true;
+            
             }
             if (flag)
-            {
-
-
-
+            { 
                 MotherSerial.Background = (Brush)bc.ConvertFrom("#ff726f");
             }
             else
             {
-
+                BirdCantAdvance3 = false;
                 this.MotherError.Text = "";
                 MotherSerial.BorderBrush = Brushes.Orange;
                 MotherSerial.Background = Brushes.Transparent;
@@ -192,71 +212,95 @@ namespace BirdManagementSystem
 
         private void AddBirdBtn_Click(object sender, RoutedEventArgs e)
         {
+            bool cantAdvanceHere = true;
             string[] spec = new string[] { "Goldian American", "Goldian European", "Goldian Australian" };
             string[] gend = new string[] { "Male", "Female" };
-            if (this.CageError.Text != "" || this.FatherError.Text != "" || this.MotherError.Text != "" || this.SerialError.Text != "")
+            DateTime? newDate = HatchDate.SelectedDate as DateTime?;
+            if (BirdCantAdvance || BirdCantAdvance1 || BirdCantAdvance2 || BirdCantAdvance3 || BirdCantAdvance4)
             {
                 //dont add the bird some input is illegal show error
+                if(newDate == null)
+                {
+                    DateError.Text = "please enter hatch date";
+                    
+                }
             }
             else
             {
                 string newSerialNumber = BirdSerialNumber.Text;
                 string newSpecies = spec[BirdSpecies.SelectedIndex];
-                string newSubSpecies = BirdSubspecies.SelectedItem.ToString();
+               if(BirdSubspecies.SelectedItem != null) { 
+                    string newSubSpecies = BirdSubspecies.SelectedItem.ToString();
+                    cantAdvanceHere = false;
+                }
+
                 string newGender = gend[BirdGender.SelectedIndex];
                 string newCageSerialNumber = CageSerial.Text;
                 string newFather = FatherSerial.Text;
                 string newMother = MotherSerial.Text;
-                DateTime newDate = (DateTime)HatchDate.SelectedDate;
-                Nullable<System.DateTime> d = new Nullable<System.DateTime>(newDate);
-                //Add the bird
-                BirdManagementDBEntities db = new BirdManagementDBEntities();
-                Bird newBird = new Bird()
+                
+                if (newDate == null)
+                    cantAdvanceHere = true;
+                else
                 {
-                    SerialNumber = newSerialNumber,
-                    Species = newSpecies,
-                    SubSpecies = newSubSpecies,
-                    HatchDate = d,
-                    Gender = newGender,
-                    Cage = newCageSerialNumber,
-                    Mother = newMother,
-                    Father = newFather,
-                };
-                try
-                {
-                    // Add a new Bird object to the context and save changes
-                    db.Birds.Add(newBird);
-                    db.SaveChanges();
+                    //Nullable<System.DateTime> d = new Nullable<System.DateTime>(newDate);
                 }
-                catch (DbEntityValidationException ex)
+                //Add the bird
+                if (!cantAdvanceHere)
                 {
-                    // Iterate over the validation errors and print them to the console
-                    foreach (var entityValidationResult in ex.EntityValidationErrors)
+                    DateError.Text = "";
+                    string newSubSpecies = BirdSubspecies.SelectedItem.ToString();
+                    if (cageExists(newCageSerialNumber))
                     {
-                        foreach (var validationError in entityValidationResult.ValidationErrors)
+
+                        BirdManagementDBEntities db = new BirdManagementDBEntities();
+                        Bird newBird = new Bird()
                         {
-                            Console.WriteLine("Property: {0} Error: {1}", validationError.PropertyName, validationError.ErrorMessage);
+                            SerialNumber = newSerialNumber,
+                            Species = newSpecies,
+                            SubSpecies = newSubSpecies,
+                            HatchDate = newDate,
+                            Gender = newGender,
+                            Cage = newCageSerialNumber,
+                            Mother = newMother,
+                            Father = newFather,
+                        };
+                        try
+                        {
+                            // Add a new Bird object to the context and save changes
+                            db.Birds.Add(newBird);
+                            db.SaveChanges();
                         }
+                        catch (DbEntityValidationException ex)
+                        {
+                            // Iterate over the validation errors and print them to the console
+                            foreach (var entityValidationResult in ex.EntityValidationErrors)
+                            {
+                                foreach (var validationError in entityValidationResult.ValidationErrors)
+                                {
+                                    Console.WriteLine("Property: {0} Error: {1}", validationError.PropertyName, validationError.ErrorMessage);
+                                }
+                            }
+                        }
+                        //clear all the fields
+                        this.BirdSerialNumber.Text = "";
+                        BirdSerialNumber.Background = Brushes.Transparent;
+                        SerialError.Text = "";
+                        this.CageSerial.Text = "";
+                        CageSerial.Background = Brushes.Transparent;
+                        CageError.Text = "";
+                        this.FatherSerial.Text = "";
+                        FatherSerial.Background = Brushes.Transparent;
+                        FatherError.Text = "";
+                        this.MotherSerial.Text = "";
+                        MotherSerial.Background = Brushes.Transparent;
+                        MotherError.Text = "";
+                        this.BirdGender.Text = "";
+                        this.BirdSpecies.Text = "";
+                        this.BirdSubspecies.Text = "";
+                        HatchDate.Text = "";
                     }
                 }
-
-                //clear all the fields
-                this.BirdSerialNumber.Text = "";
-                BirdSerialNumber.Background = Brushes.Transparent;
-                SerialError.Text = "";
-                this.CageSerial.Text = "";
-                CageSerial.Background = Brushes.Transparent;
-                CageError.Text = "";
-                this.FatherSerial.Text = "";
-                FatherSerial.Background = Brushes.Transparent;
-                FatherError.Text = "";
-                this.MotherSerial.Text = "";
-                MotherSerial.Background = Brushes.Transparent;
-                MotherError.Text = "";
-                this.BirdGender.Text = "";
-                this.BirdSpecies.Text = "";
-                this.BirdSubspecies.Text = "";
-                HatchDate.Text = "";
             }
         }
         private void NewCageSerialNumber_TextChanged(object sender, TextChangedEventArgs e)
@@ -269,6 +313,13 @@ namespace BirdManagementSystem
             {
                 errorMessage = "Serial Number should contain numbers and letters only!";
                 flag1 = true;
+                
+            }
+            if (!flag1 && !checkCageSerialNumberValidation(serialNumber) && serialNumber != "" && cageExists(serialNumber))
+            {
+                errorMessage = "Cage does not exist";
+                flag1 = true;
+
             }
             if (flag1)
             {
@@ -278,6 +329,7 @@ namespace BirdManagementSystem
             }
             else
             {
+
                 NewCageSerialNumberError.Text = "";
                 NewCageSerialNumber.BorderBrush = Brushes.Orange;
                 NewCageSerialNumber.Background = Brushes.Transparent;
@@ -311,6 +363,12 @@ namespace BirdManagementSystem
                 NewCageMaterialSelectError.Text = "You must choose the cage's material!";
                 flag = false;
             }
+            if (cageExists(newSerialNumber))
+            {
+                flag = false;
+                NewCageMaterialSelectError.Text = "Cage Exists!";
+            }
+            
             if (flag)
             {
                 string matChoice = matChoiceArr[NewCageMaterialSelect.SelectedIndex];
@@ -339,7 +397,7 @@ namespace BirdManagementSystem
         }
         private bool checkCageSerialNumberValidation(string sn)
         {
-            return sn.All(c => Char.IsLetter(c) || Char.IsNumber(c)) && sn.Any(Char.IsLetter) && sn.Any(Char.IsNumber);
+            return sn.All(c => Char.IsLetter(c) || Char.IsNumber(c)) && sn.Any(Char.IsLetter) && sn.Any(Char.IsNumber) ;
         }
 
         private void SearchCageBtn_Click(object sender, RoutedEventArgs e)
@@ -469,7 +527,12 @@ namespace BirdManagementSystem
             ComboBoxItem typeItem = (ComboBoxItem)BirdSpeciesFind.SelectedItem;
             Trace.WriteLine(typeItem);
             if (typeItem != null)
-                SelectedBirdSpecies = typeItem.Content.ToString();
+            {
+                if (typeItem.Content != null)
+                    SelectedBirdSpecies = typeItem.Content.ToString();
+                else
+                    SelectedBirdSpecies = "";
+            }
             else
                 SelectedBirdSpecies = "";
 
@@ -478,7 +541,12 @@ namespace BirdManagementSystem
             ComboBoxItem typeItem1 = (ComboBoxItem)BirdGenderFind.SelectedItem;
             Trace.WriteLine(typeItem);
             if (typeItem1 != null)
-                SelectedBirdGender = typeItem1.Content.ToString();
+            {
+                if (typeItem1.Content != null)
+                    SelectedBirdGender = typeItem1.Content.ToString();
+                else
+                    SelectedBirdGender = "";
+            }
             else
                 SelectedBirdGender = "";
 
@@ -487,27 +555,198 @@ namespace BirdManagementSystem
                         select b;
 
             //this.CageSearchTable.ItemsSource = new LinkedList<Cage>();
-            List<Bird> ReactiveList = new List<Bird>(); ;
+            List<Bird> ReactiveList = new List<Bird>(); 
 
-            foreach (var item in birds)
+            /*foreach (var item in birds)
+            {*/
+             
+            /*if (newDate == null && BirdSN == "" && SelectedBirdSpecies == "" && SelectedBirdGender == "")
             {
-                if (newDate == null)
-                    Trace.WriteLine("New Date is" + newDate);
-                if (BirdSN == null)
-                    Trace.WriteLine("birdsn is null");
-                if (SelectedBirdSpecies == null)
-                    Trace.WriteLine("birdspecies is null");
-                if (newDate == null && BirdSN == "" && SelectedBirdSpecies == "" && SelectedBirdGender == "")
-                {
-                    Trace.WriteLine("entered the if&&&&&&");
+                    
                     //search to all fields
-                    InfoFound = true;
-                    notAll = false;
-                    this.BirdSearchTable.ItemsSource = birds.ToList();
-                    this.BirdSearchTable.IsReadOnly = true;
-                    BirdSearchTable.Visibility = Visibility.Visible;
-                }
+                  InfoFound = true;
             }
+            else if(newDate == null && BirdSN == "" && SelectedBirdSpecies != "" && SelectedBirdGender == "") {
+                InfoFound= true;
+                var birdsL = from c in db.Birds
+                             where c.Species== SelectedBirdSpecies
+                            select c ;
+                
+                ReactiveList = birdsL.ToList();
+                if (ReactiveList.Count == 0)
+                    InfoFound = false;
+                ReactiveList.Sort((c1, c2) => c2.SerialNumber.CompareTo(c1.SerialNumber));
+                
+            }*/
+            if (newDate == null && BirdSN == "" && SelectedBirdSpecies == "" && SelectedBirdGender == "")
+            {
+                // search all records
+                ReactiveList = db.Birds.ToList();
+                InfoFound = true;
+            }
+            else if (newDate != null && BirdSN == "" && SelectedBirdSpecies == "" && SelectedBirdGender == "")
+            {
+                // search by hatch date
+                var birdsL = from c in db.Birds
+                             where c.HatchDate == newDate
+                             select c;
+                ReactiveList = birdsL.ToList();
+                InfoFound = ReactiveList.Count > 0;
+            }
+            else if (newDate == null && BirdSN != "" && SelectedBirdSpecies == "" && SelectedBirdGender == "")
+            {
+                // search by serial number
+                var birdsL = from c in db.Birds
+                             where c.SerialNumber == BirdSN
+                             select c;
+                ReactiveList = birdsL.ToList();
+                InfoFound = ReactiveList.Count > 0;
+            }
+            else if (newDate == null && BirdSN == "" && SelectedBirdSpecies != "" && SelectedBirdGender == "")
+            {
+                // search by bird species
+                var birdsL = from c in db.Birds
+                             where c.Species == SelectedBirdSpecies
+                             select c;
+                ReactiveList = birdsL.ToList();
+                InfoFound = ReactiveList.Count > 0;
+            }
+            else if (newDate == null && BirdSN == "" && SelectedBirdSpecies == "" && SelectedBirdGender != "")
+            {
+                // search by bird gender
+                var birdsL = from c in db.Birds
+                             where c.Gender == SelectedBirdGender
+                             select c;
+                ReactiveList = birdsL.ToList();
+                InfoFound = ReactiveList.Count > 0;
+            }
+            else if (newDate != null && BirdSN != "" && SelectedBirdSpecies == "" && SelectedBirdGender == "")
+            {
+                // search by hatch date and serial number
+                var birdsL = from c in db.Birds
+                             where c.HatchDate == newDate && c.SerialNumber == BirdSN
+                             select c;
+                ReactiveList = birdsL.ToList();
+                InfoFound = ReactiveList.Count > 0;
+            }
+            else if (newDate != null && BirdSN == "" && SelectedBirdSpecies != "" && SelectedBirdGender == "")
+            {
+                // search by hatch date and bird species
+                var birdsL = from c in db.Birds
+                             where c.HatchDate == newDate && c.Species == SelectedBirdSpecies
+                             select c;
+                ReactiveList = birdsL.ToList();
+                InfoFound = ReactiveList.Count > 0;
+            }
+            else if (newDate != null && BirdSN == "" && SelectedBirdSpecies == "" && SelectedBirdGender != "")
+            {
+                // search by hatch date and bird gender
+                var birdsL = from c in db.Birds
+                             where c.HatchDate == newDate && c.Gender == SelectedBirdGender
+                             select c;
+                ReactiveList = birdsL.ToList();
+                InfoFound = ReactiveList.Count > 0;
+            }
+            else if (newDate == null && BirdSN != "" && SelectedBirdSpecies != "" && SelectedBirdGender == "")
+            {
+                // search by serial number and bird species
+                var birdsL = from c in db.Birds
+                             where c.SerialNumber == BirdSN && c.Species == SelectedBirdSpecies
+                             select c;
+                ReactiveList = birdsL.ToList();
+                InfoFound = ReactiveList.Count > 0;
+            }
+            else if (newDate == null && BirdSN != "" && SelectedBirdSpecies == "" && SelectedBirdGender != "")
+            {
+                // search by serial number and bird gender
+                var birdsL = from c in db.Birds
+                             where c.SerialNumber == BirdSN && c.Gender == SelectedBirdGender
+                             select c;
+                ReactiveList = birdsL.ToList();
+                InfoFound = ReactiveList.Count > 0;
+            }
+            else if (newDate == null && BirdSN == "" && SelectedBirdSpecies != "" && SelectedBirdGender != "")
+            {
+                // search by bird species and bird gender
+                var birdsL = from c in db.Birds
+                             where c.Species == SelectedBirdSpecies && c.Gender == SelectedBirdGender
+                             select c;
+                ReactiveList = birdsL.ToList();
+                InfoFound = ReactiveList.Count > 0;
+            }
+            else if (newDate != null && BirdSN != "" && SelectedBirdSpecies != "" && SelectedBirdGender == "")
+            {
+                // search by hatch date, serial number, and bird species
+                var birdsL = from c in db.Birds
+                             where c.HatchDate == newDate && c.SerialNumber == BirdSN && c.Species == SelectedBirdSpecies
+                             select c;
+                ReactiveList = birdsL.ToList();
+                InfoFound = ReactiveList.Count > 0;
+            }
+            else if (newDate != null && BirdSN != "" && SelectedBirdSpecies == "" && SelectedBirdGender != "")
+            {
+                // search by hatch date, serial number, and bird gender
+                var birdsL = from c in db.Birds
+                             where c.HatchDate == newDate && c.SerialNumber == BirdSN && c.Gender == SelectedBirdGender
+                             select c;
+                ReactiveList = birdsL.ToList();
+                InfoFound = ReactiveList.Count > 0;
+            }
+            else if (newDate != null && BirdSN == "" && SelectedBirdSpecies != "" && SelectedBirdGender != "")
+            {
+                // search by hatch date, bird species, and bird gender
+                var birdsL = from c in db.Birds
+                             where c.HatchDate == newDate && c.Species == SelectedBirdSpecies && c.Gender == SelectedBirdGender
+                             select c;
+                ReactiveList = birdsL.ToList();
+                InfoFound = ReactiveList.Count > 0;
+            }
+            else if (newDate == null && BirdSN != "" && SelectedBirdSpecies != "" && SelectedBirdGender != "")
+            {
+                // search by serial number, bird species, and bird gender
+                var birdsL = from c in db.Birds
+                             where c.SerialNumber == BirdSN && c.Species == SelectedBirdSpecies && c.Gender == SelectedBirdGender
+                             select c;
+                ReactiveList = birdsL.ToList();
+                InfoFound = ReactiveList.Count > 0;
+            }
+            else if (newDate != null && BirdSN != "" && SelectedBirdSpecies != "" && SelectedBirdGender != "")
+            {
+                // search by all criteria
+                var birdsL = from c in db.Birds
+                             where c.HatchDate == newDate && c.SerialNumber == BirdSN && c.Species == SelectedBirdSpecies && c.Gender == SelectedBirdGender
+                             select c;
+                ReactiveList = birdsL.ToList();
+                InfoFound = ReactiveList.Count > 0;
+            }
+
+            // sort the list by serial number
+            ReactiveList.Sort((c1, c2) => Int32.Parse(c2.SerialNumber).CompareTo(Int32.Parse(c1.SerialNumber)));
+            if (!InfoFound)
+            {
+               
+                BirdSearchTable.Visibility = Visibility.Collapsed;
+                NoResultsFoundB.Visibility = Visibility.Visible;
+            }
+            else
+            {
+                this.BirdSearchTable.ItemsSource = ReactiveList;
+                this.BirdSearchTable.IsReadOnly = true;
+                BirdSearchTable.Visibility = Visibility.Visible;
+                NoResultsFoundB.Visibility = Visibility.Collapsed;
+            }
+            
+        }
+
+        private bool cageExists(string cageSerial)
+        {
+            BirdManagementDBEntities db = new BirdManagementDBEntities();
+            var cages = from c in db.Cages
+                        where c.SerialNumber == cageSerial
+                        select c;
+            List<Cage> check = cages.ToList();
+            return check.Count > 0;
+            
         }
     }
 }
