@@ -498,8 +498,7 @@ namespace BirdManagementSystem
             {
                 CageSearchTable.Visibility = Visibility.Visible;
                 NoResultsFound.Visibility = Visibility.Collapsed;
-            }
-            if (notBoth)
+                if (notBoth)
             {
                 if (ReactiveList.Count > 1 && ReactiveList.Count!=0)
                 {
@@ -533,6 +532,8 @@ namespace BirdManagementSystem
                     this.Close();
                 }
             }
+            }
+            
         }
             
         private void SearchBirdBtn_Click(object sender, RoutedEventArgs e)
