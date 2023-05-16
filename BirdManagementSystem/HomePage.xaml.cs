@@ -1,6 +1,7 @@
 ﻿using Microsoft.Office.Interop.Excel;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Data.Entity.Validation;
 using System.Diagnostics;
 using System.Linq;
@@ -16,6 +17,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using System.Windows.Threading;
+using System.Data;
 
 namespace BirdManagementSystem
 {
@@ -87,6 +89,7 @@ namespace BirdManagementSystem
                 BirdSerialNumber.Background = Brushes.Transparent;
                 SerialError.Text = "";
                 flag = false;
+
                 
             }
 
@@ -96,11 +99,15 @@ namespace BirdManagementSystem
                 flag = true;
               
             }
+            else if (birdExists(BirdSerialNumber.Text))
+            {
+                SerialError.Text = "Bird already Exist!";
+                flag = true;
+            }
             if (flag)
             {
-
-
                 BirdSerialNumber.Background = (Brush)bc.ConvertFrom("#ff726f");
+                BirdCantAdvance = true;
             }
             else
             {
@@ -119,6 +126,7 @@ namespace BirdManagementSystem
             {
                 CageSerial.Background = Brushes.Transparent;
                 CageError.Text = "";
+                flag = false;
               
             }
             if (!Regex.IsMatch(this.CageSerial.Text, @"^[a-zA-Z0-9]+$"))
@@ -136,7 +144,7 @@ namespace BirdManagementSystem
             if (flag)
             {
 
-
+                BirdCantAdvance1 = true;
                 CageSerial.Background = (Brush)bc.ConvertFrom("#ff726f");
             }
             else
@@ -156,6 +164,7 @@ namespace BirdManagementSystem
             {
                 FatherSerial.Background = Brushes.Transparent;
                 FatherError.Text = "";
+                flag = false;
                
             }
 
@@ -165,10 +174,23 @@ namespace BirdManagementSystem
                 flag = true;
             
             }
+            if (!birdExists(FatherSerial.Text))
+            {
+                this.FatherError.Text = "Bird doesn't exist!";
+                flag = true;
+            }
+            else
+            {
+                if (getBirdGender(FatherSerial.Text) != "Male")
+                {
+                    this.FatherError.Text = "Bird should be male";
+                    flag = true;
+                }
+            }
             if (flag)
             {
 
-
+                BirdCantAdvance2 = true;
                 FatherSerial.Background = (Brush)bc.ConvertFrom("#ff726f");
             }
             else
@@ -188,6 +210,7 @@ namespace BirdManagementSystem
             {
                 MotherSerial.Background = Brushes.Transparent;
                 MotherError.Text = "";
+                flag = false;
              
             }
             if (!Regex.IsMatch(this.MotherSerial.Text, @"^[0-9]+$"))
@@ -196,9 +219,23 @@ namespace BirdManagementSystem
                 flag = true;
             
             }
+            if (!birdExists(MotherSerial.Text))
+            {
+                this.MotherError.Text = "Bird doesn't exist!";
+                flag = true;
+            }
+            else
+            {
+                if (getBirdGender(MotherSerial.Text) != "Female")
+                {
+                    this.MotherError.Text = "Bird should be female";
+                    flag = true;
+                }
+            }
             if (flag)
             { 
                 MotherSerial.Background = (Brush)bc.ConvertFrom("#ff726f");
+                BirdCantAdvance3 = true;
             }
             else
             {
@@ -233,7 +270,7 @@ namespace BirdManagementSystem
                if(BirdSubspecies.SelectedItem != null) { 
                     string newSubSpecies = BirdSubspecies.SelectedItem.ToString();
                     cantAdvanceHere = false;
-                }
+               }
 
                 string newGender = gend[BirdGender.SelectedIndex];
                 string newCageSerialNumber = CageSerial.Text;
@@ -404,6 +441,7 @@ namespace BirdManagementSystem
         private void SearchCageBtn_Click(object sender, RoutedEventArgs e)
         {
 
+           
             bool InfoFound = false;
             string SelectedCageMat;
             bool notBoth = true;
@@ -499,41 +537,46 @@ namespace BirdManagementSystem
                 CageSearchTable.Visibility = Visibility.Visible;
                 NoResultsFound.Visibility = Visibility.Collapsed;
                 if (notBoth)
-            {
-                if (ReactiveList.Count > 1 && ReactiveList.Count!=0)
                 {
-                    this.CageSearchTable.ItemsSource = ReactiveList;
-                    this.CageSearchTable.IsReadOnly = true;
+                    if (ReactiveList.Count > 1 && ReactiveList.Count!=0)
+                    {
+                            
+                            this.CageSearchTable.ItemsSource = ReactiveList;
+
+                            this.CageSearchTable.IsReadOnly = true;
+                    }
+                    else
+                    {
+                        Cage c = ((Cage)ReactiveList[0]);
+                        CageWindow page = new CageWindow(c);
+                        page.Show();
+                        this.Close();
+                    }
+
                 }
                 else
                 {
-                    Cage c = ((Cage)ReactiveList[0]);
-                    CageWindow page = new CageWindow(c);
-                    page.Show();
-                    this.Close();
+                    List<Cage> newList = new List<Cage>();
+                    newList = cages.ToList();
+                    if (newList.Count > 1 && newList.Count != 0)
+                    {
+                        newList.Sort((c1, c2) => c2.SerialNumber.CompareTo(c1.SerialNumber));
+                        
+                        this.CageSearchTable.ItemsSource = newList;
+                        this.CageSearchTable.IsReadOnly = true;
+                    }
+                    else
+                    {
+                        Cage c = ((Cage)newList[0]);
+                        CageWindow page = new CageWindow(c);
+                        page.Show();
+                        this.Close();
+                    }
                 }
 
             }
-            else
-            {
-                List<Cage> newList = new List<Cage>();
-                newList = cages.ToList();
-                if (newList.Count > 1 && newList.Count != 0)
-                {
-                    newList.Sort((c1, c2) => c2.SerialNumber.CompareTo(c1.SerialNumber));
-                    this.CageSearchTable.ItemsSource = newList;
-                    this.CageSearchTable.IsReadOnly = true;
-                }
-                else
-                {
-                    Cage c = ((Cage)newList[0]);
-                    CageWindow page = new CageWindow(c);
-                    page.Show();
-                    this.Close();
-                }
-            }
-            }
             
+
         }
             
         private void SearchBirdBtn_Click(object sender, RoutedEventArgs e)
@@ -753,12 +796,18 @@ namespace BirdManagementSystem
             }
             else
             {
-                if (ReactiveList.Count > 1 && ReactiveList.Count != 0)
+                if (ReactiveList.Count > 1)
                 {
+                    
                     this.BirdSearchTable.ItemsSource = ReactiveList;
                     this.BirdSearchTable.IsReadOnly = true;
                     BirdSearchTable.Visibility = Visibility.Visible;
                     NoResultsFoundB.Visibility = Visibility.Collapsed;
+                }
+                else if (ReactiveList.Count == 0)
+                {
+                    BirdSearchTable.Visibility = Visibility.Collapsed;
+                    NoResultsFoundB.Visibility = Visibility.Visible;
                 }
                 else
                 {
@@ -780,6 +829,24 @@ namespace BirdManagementSystem
             List<Cage> check = cages.ToList();
             return check.Count > 0;
             
+        }
+        private bool birdExists(string birdSerial)
+        {
+            BirdManagementDBEntities db = new BirdManagementDBEntities();
+            var birds = from b in db.Birds
+                        where b.SerialNumber == birdSerial
+                        select b;
+            List<Bird> check = birds.ToList();
+            return check.Count > 0;
+        }
+        private string getBirdGender(string birdSN)
+        {
+            BirdManagementDBEntities db = new BirdManagementDBEntities();
+            var birds = from b in db.Birds
+                        where b.SerialNumber == birdSN
+                        select b;
+            List<Bird> check = birds.ToList();
+            return check[0].Gender;
         }
 
         private void CageSearchTable_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -814,6 +881,6 @@ namespace BirdManagementSystem
                     /*mainPage.mainFrame.Content = page;*/
                 }
             }
-        }
+        }  
     }
 }

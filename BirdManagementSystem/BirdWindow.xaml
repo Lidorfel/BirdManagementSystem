@@ -39,6 +39,7 @@
                 </LinearGradientBrush>
             </Grid.Background>
             <Border Height="530" Width="900" VerticalAlignment="Top" CornerRadius="0 0 180 0" Background="#0c0c4c" Margin="0,-1,0,0" >
+
             </Border>
             <TextBlock HorizontalAlignment="Center" FontFamily="Eras ITC" Margin="0,27,0,0" TextWrapping="Wrap" Text="Bird Page" VerticalAlignment="Top" Height="63" Width="410" Foreground="#FFCC6E06" TextAlignment="Center" FontSize="40" FontWeight="SemiBold" >
                 <TextBlock.Effect>
@@ -59,6 +60,10 @@
             <TextBlock TextWrapping="Wrap" Text="Sub Species : " Margin="22,177,717,373" Foreground="#DDFFFFFF" IsEnabled="False"/>
             <TextBlock x:Name="CurrentSubSpecies" TextWrapping="Wrap" Margin="183,177,574,373" Foreground="#DDBDBDBD" IsEnabled="False" Text=""/>
             <TextBlock x:Name="addNewChickSuccess" TextWrapping="Wrap" Margin="432,465,262,71" Foreground="#FF209B0A" TextAlignment="Center" FontSize="16"/>
+            <TextBox Visibility="Collapsed" x:Name="BirdSerialUpdate" Margin="153,94,574,482" materialDesign:HintAssist.Hint="New Bird Serial Number"  Foreground="white" BorderBrush="white" CaretBrush="#FFD94448" SelectionBrush="#ffd94448"/>
+            <TextBlock x:Name="BirdSerialUpdateError" TextWrapping="Wrap" Text="" Margin="153,121,574,456" Foreground="#FFEF1717"/>
+            <TextBox Visibility="Collapsed" x:Name="CageSerialUpdate" Margin="153,290,574,286" materialDesign:HintAssist.Hint="Bird's new cage SN"  Foreground="white" BorderBrush="white" CaretBrush="#FFD94448" SelectionBrush="#ffd94448"/>
+            <TextBlock x:Name="CageSerialUpdateError" TextWrapping="Wrap" Text="" Margin="153,319,574,249" Foreground="#FFEF1717"/>
         </Grid>
         <Button x:Name="AddChickBtn" Content="Add Chick" Margin="21,332,763,220" Background="#FFCC6E06" Foreground="#DDFFFFFF" Click="AddChickBtn_Click">
             <Button.Effect>
@@ -66,6 +71,21 @@
             </Button.Effect>
         </Button>
         <Button x:Name="BackToHomePage" Content="Home Page" Margin="21,390,763,162" Background="#FFCC6E06" Foreground="#DDFFFFFF" Click="BackToHomePage_Click">
+            <Button.Effect>
+                <DropShadowEffect/>
+            </Button.Effect>
+        </Button>
+        <Button x:Name="UpdateBirdBtn" Content="Update Bird" Margin="21,454,763,114" Background="#FFCC6E06" Foreground="#DDFFFFFF" Click="UpdateBirdBtn_Click">
+            <Button.Effect>
+                <DropShadowEffect/>
+            </Button.Effect>
+        </Button>
+        <Button Visibility="Collapsed" x:Name="UpdateDetails" Content="Update" Margin="176,340,608,228" Background="#FFCC6E06" Foreground="#DDFFFFFF" Click="UpdateDetails_Click">
+            <Button.Effect>
+                <DropShadowEffect/>
+            </Button.Effect>
+        </Button>
+        <Button Visibility="Collapsed" x:Name="deleteBird" Content="Dead X" Margin="176,398,608,170" Background="#FFCC6E06" Foreground="#DDFFFFFF" Click="deleteBird_Click" >
             <Button.Effect>
                 <DropShadowEffect/>
             </Button.Effect>
@@ -80,17 +100,17 @@
                 </TransformGroup>
             </Image.RenderTransform>
         </Image>
-        <Grid x:Name="ChickFields" Visibility="Collapsed">
-            <TextBox Visibility="Collapsed"  x:Name="FatherSerial" Margin="325,101,325,451" materialDesign:HintAssist.Hint="Enter Father Serial Number"  Foreground="white" Width="250" BorderBrush="white" CaretBrush="#FFD94448" SelectionBrush="#ffd94448"/>
-            <TextBox Visibility="Collapsed"   x:Name="MotherSerial" Margin="325,101,325,451" materialDesign:HintAssist.Hint="Enter Mother Serial Number"  Foreground="white" Width="250" BorderBrush="white" CaretBrush="#FFD94448" SelectionBrush="#ffd94448"/>
-            <TextBlock x:Name="ParentError" TextWrapping="Wrap" Text="" Margin="325,146,325,410" Foreground="#FFEF1717"/>
+        <Grid x:Name="ChickFields" Visibility="Collapsed" >
+            <TextBox Visibility="Collapsed" x:Name="FatherSerial" Margin="325,101,325,451" materialDesign:HintAssist.Hint="Enter Father Serial Number"  Foreground="white" Width="250" BorderBrush="white" CaretBrush="#FFD94448" SelectionBrush="#ffd94448"/>
+            <TextBox Visibility="Collapsed" x:Name="MotherSerial" Margin="325,101,325,451" materialDesign:HintAssist.Hint="Enter Mother Serial Number"  Foreground="white" Width="250" BorderBrush="white" CaretBrush="#FFD94448" SelectionBrush="#ffd94448"/>
+            <TextBlock x:Name="ParentError" TextWrapping="Wrap" Text="" Margin="325,152,325,404" Foreground="#FFEF1717"/>
             <DatePicker x:Name="HatchDate" Margin="325,188,325,0" Foreground="#FFFE8704" materialDesign:HintAssist.Hint="Enter Hatch Date"  Width="250" Height="37" BorderBrush="white" VerticalAlignment="Top" >
 
             </DatePicker>
             <TextBox x:Name="BirdSerialNumber" Margin="325,284,325,265" materialDesign:HintAssist.Hint="Enter Serial Number"  Foreground="white" Width="250" BorderBrush="white" CaretBrush="#FFD94448" SelectionBrush="#ffd94448"/>
             <TextBlock x:Name="SerialError" TextWrapping="Wrap" Text="" Margin="325,335,325,215" Foreground="#FFEF1717"/>
             <TextBlock x:Name="HatchDateError" TextWrapping="Wrap" Text="" Margin="325,227,325,316" Foreground="#FFEF1717"/>
-            <ComboBox x:Name="BirdGender" HorizontalAlignment="Left" Margin="325,387,325,0" VerticalAlignment="Top" Width="250" BorderBrush="White" materialDesign:HintAssist.Hint="Enter Gender">
+            <ComboBox x:Name="BirdGender" HorizontalAlignment="Left" Margin="325,387,325,0" VerticalAlignment="Top" Width="250" BorderBrush="White" materialDesign:HintAssist.Hint="Enter Gender" Foreground="#FFFF8600">
                 <ComboBoxItem>Male</ComboBoxItem>
                 <ComboBoxItem>Female</ComboBoxItem>
             </ComboBox>

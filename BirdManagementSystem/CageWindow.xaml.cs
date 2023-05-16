@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -39,6 +40,7 @@ namespace BirdManagementSystem
         }
         private void ShowBirdsBtn_Click(object sender, RoutedEventArgs e)
         {
+            UpdateFieldsGrid.Visibility=Visibility.Collapsed;
             BirdManagementDBEntities db = new BirdManagementDBEntities();
             var docs = from b in db.Birds
                        where b.Cage == self.SerialNumber
@@ -73,6 +75,124 @@ namespace BirdManagementSystem
                 }
             }
         }
+        private bool checkCageSerialNumberValidation(string sn)
+        {
+            return sn.All(c => Char.IsLetter(c) || Char.IsNumber(c)) && sn.Any(Char.IsLetter) && sn.Any(Char.IsNumber);
+        }
+        private bool cageExists(string cageSerial)
+        {
+            BirdManagementDBEntities db = new BirdManagementDBEntities();
+            var cages = from c in db.Cages
+                        where c.SerialNumber == cageSerial
+                        select c;
+            List<Cage> check = cages.ToList();
+            return check.Count > 0;
 
+        }
+        private void UpdateCageBtn_Click(object sender, RoutedEventArgs e)
+        {
+            BirdsInCageGrid.Visibility = Visibility.Collapsed;
+            NewCageSerialNumber.Text=self.SerialNumber.ToString();
+            NewCageWidth.Text = self.Width.ToString();
+            NewCageHeight.Text = self.Height.ToString();
+            NewCageLength.Text = self.Length.ToString();
+            UpdateCageBtn.Visibility = Visibility.Collapsed;
+            UpdateFieldsGrid.Visibility = Visibility.Visible;
+        }
+
+        private void UpdateDetails_Click(object sender, RoutedEventArgs e)
+        {
+            string[] matChoiceArr = { "Iron", "Wood", "Plastic" };
+            NewCageMaterialSelectError.Text = "";
+            NewCageDimensionError.Text = "";
+            NewCageSerialNumberError.Text = "";
+            string newSerialNumber = NewCageSerialNumber.Text;
+            string cageWidthText = NewCageWidth.Text;
+            string cageLengthText = NewCageLength.Text;
+            string cageHeightText = NewCageHeight.Text;
+            double newCageWidth, newCageHeight, newCageLength;
+            bool flag = true;
+            if (!checkCageSerialNumberValidation(newSerialNumber) || newSerialNumber == "")
+            {
+                NewCageSerialNumberError.Text = "Serial Number should contain numbers and letters only!";
+                flag = false;
+            }
+            if (!(Double.TryParse(cageWidthText, out newCageWidth) && Double.TryParse(cageHeightText, out newCageHeight) && Double.TryParse(cageLengthText, out newCageLength)))
+            {
+                NewCageDimensionError.Text = "Dimension must be a number!";
+                flag = false;
+            }
+            if (NewCageMaterialSelect.SelectedIndex == -1)
+            {
+                NewCageMaterialSelectError.Text = "You must choose the cage's material!";
+                flag = false;
+            }
+            if (cageExists(newSerialNumber) && newSerialNumber != self.SerialNumber)
+            {
+                flag = false;
+                NewCageMaterialSelectError.Text = "Cage Exists!";
+            }
+
+            if (flag)
+            {
+                string matChoice = matChoiceArr[NewCageMaterialSelect.SelectedIndex];
+                Double.TryParse(cageWidthText, out newCageWidth);
+                Double.TryParse(cageHeightText, out newCageHeight);
+                Double.TryParse(cageLengthText, out newCageLength);
+                BirdManagementDBEntities db = new BirdManagementDBEntities();
+                var birdsInCage = from b in db.Birds
+                                  where b.Cage == self.SerialNumber
+                                  select b;
+                foreach (Bird bird in birdsInCage.ToList()) {
+                    bird.Cage = newSerialNumber;
+                }
+                var CageToUpdate = from c in db.Cages
+                                   where c.Id==self.Id
+                                   select c;
+                Cage cage=CageToUpdate.FirstOrDefault();
+                if (cage!=null)
+                {
+                    cage.SerialNumber = newSerialNumber;
+                }
+                db.SaveChanges();
+                CageWindow page = new CageWindow(cage);
+                page.Show();
+                this.Close();
+            }
+        }
+        private System.Data.DataTable toDataTableBirds(List<Bird> birds)
+        {
+            System.Data.DataTable dataTable = new System.Data.DataTable();
+
+            // Add columns to the DataTable
+
+            dataTable.Columns.Add("Serial Number", typeof(string));
+            dataTable.Columns.Add("Species", typeof(string));
+            dataTable.Columns.Add("SubSpecies", typeof(string));
+            dataTable.Columns.Add("Cage", typeof(string));
+            dataTable.Columns.Add("Gender", typeof(string));
+            dataTable.Columns.Add("Father", typeof(string));
+            dataTable.Columns.Add("Mother", typeof(string));
+            dataTable.Columns.Add("Hatch Date", typeof(DateTime));
+
+
+            // Add rows to the DataTable
+            foreach (Bird bird in birds)
+            {
+                DataRow row = dataTable.NewRow();
+                row["Serial Number"] = bird.SerialNumber;
+                row["Species"] = bird.Species;
+                row["SubSpecies"] = bird.SubSpecies;
+                row["Cage"] = bird.Cage;
+                row["Gender"] = bird.Gender;
+                row["Father"] = bird.Father;
+                row["Mother"] = bird.Mother;
+                row["Hatch Date"] = bird?.HatchDate;
+                dataTable.Rows.Add(row);
+            }
+            return dataTable;
+        }
     }
+
+
 }

@@ -41,6 +41,8 @@ namespace BirdManagementSystem
         }
         private void AddChickBtn_Click(object sender, RoutedEventArgs e)
         {
+            CageSerialUpdateError.Text = "";
+            BirdSerialUpdateError.Text = "";
             this.ChickFields.Visibility = Visibility.Visible;
             this.AddChickBtn.Visibility = Visibility.Collapsed;
             if (self.Gender == "Male")
@@ -61,6 +63,8 @@ namespace BirdManagementSystem
         }
         private void addNewChickBtn_Click(object sender, RoutedEventArgs e)
         {
+            CageSerialUpdateError.Text = "";
+            BirdSerialUpdateError.Text = "";
             bool flag = true;
             this.addNewChickSuccess.Text = "";
             this.GenderError.Text = "";
@@ -108,6 +112,14 @@ namespace BirdManagementSystem
                 {
                     this.ParentError.Text = "SN not found";
                     flag = false;
+                }
+                else if(docs.ToList().Count() == 1)
+                {
+                    if (docs.ToList()[0].Gender == self.Gender)
+                    {
+                        this.ParentError.Text = "Parent's Gender is not correct";
+                        flag = false;
+                    }
                 }
             }
             if(flag)
@@ -185,6 +197,118 @@ namespace BirdManagementSystem
             HomePage HP = new HomePage();
             HP.Show();
             this.Close();
+        }
+
+        private void UpdateBirdBtn_Click(object sender, RoutedEventArgs e)
+        {
+            CageSerialUpdateError.Text = "";
+            BirdSerialUpdateError.Text = "";
+            BirdSerialUpdate.Text = self.SerialNumber.ToString();
+            CageSerialUpdate.Text = self.Cage.ToString();
+            BirdSerialUpdate.Visibility = Visibility.Visible;
+            CageSerialUpdate.Visibility = Visibility.Visible;
+            UpdateDetails.Visibility = Visibility.Visible;
+            deleteBird.Visibility = Visibility.Visible;
+            CurrentBirdSN.Visibility = Visibility.Collapsed;
+            CurrentCageSN.Visibility = Visibility.Collapsed;
+            UpdateBirdBtn.Visibility = Visibility.Collapsed;
+        }
+
+        private void UpdateDetails_Click(object sender, RoutedEventArgs e)
+        {
+            string newBirdSN=BirdSerialUpdate.Text;
+            string newCageSN=CageSerialUpdate.Text;
+            /*bool flag=true;*/
+            if (newBirdSN == "")
+            {
+                BirdSerialUpdateError.Text = "Cannot be empty";
+                return;
+
+            }
+            if (newBirdSN.All(Char.IsDigit) == false)
+            {
+                BirdSerialUpdateError.Text = "Bird SN must contain only digits";
+                return;
+            }
+            if (birdExists(newBirdSN))
+            {
+                if (newBirdSN != self.SerialNumber)
+                {
+                    BirdSerialUpdateError.Text = "Bird already exist!";
+                    return;
+                }
+            }
+            if (newCageSN == "")
+            {
+                CageSerialUpdateError.Text = "Cannot be empty";
+                return;
+            }
+            if (!checkCageSerialNumberValidation(newCageSN))
+            {
+                CageSerialUpdateError.Text = "Cage SN must contain letters and digits";
+                return;
+            }
+            if (!cageExists(newCageSN))
+            {
+                CageSerialUpdateError.Text = "New Cage doesnt exist";
+                return;
+            }
+            BirdManagementDBEntities db = new BirdManagementDBEntities();
+            var bird = from b in db.Birds
+                       where b.Id == self.Id
+                       select b;
+            Bird me = bird.ToList()[0];
+            me.SerialNumber = newBirdSN;
+            me.Cage = newCageSN;
+            db.SaveChanges();
+            BirdWindow page=new BirdWindow(me);
+            page.Show();
+            this.Close();
+        }
+        private bool cageExists(string cageSerial)
+        {
+            BirdManagementDBEntities db = new BirdManagementDBEntities();
+            var cages = from c in db.Cages
+                        where c.SerialNumber == cageSerial
+                        select c;
+            List<Cage> check = cages.ToList();
+            return check.Count > 0;
+
+        }
+        private bool birdExists(string birdSerial)
+        {
+            BirdManagementDBEntities db = new BirdManagementDBEntities();
+            var birds = from b in db.Birds
+                        where b.SerialNumber == birdSerial
+                        select b;
+            List<Bird> check = birds.ToList();
+            return check.Count > 0;
+        }
+        private bool checkCageSerialNumberValidation(string sn)
+        {
+            return sn.All(c => Char.IsLetter(c) || Char.IsNumber(c)) && sn.Any(Char.IsLetter) && sn.Any(Char.IsNumber);
+        }
+
+        private void deleteBird_Click(object sender, RoutedEventArgs e)
+        {
+            MessageBoxResult result = MessageBox.Show("Are you sure you want to delete?", "Confirmation", MessageBoxButton.YesNo);
+
+            // Check what the user chose
+            if (result == MessageBoxResult.Yes)
+            {
+                BirdManagementDBEntities db = new BirdManagementDBEntities();
+                var rowToDelete = db.Birds.FirstOrDefault(row => row.Id == self.Id);
+                // Check if the row exists
+                if (rowToDelete != null)
+                {
+                    // Delete the row
+                    db.Birds.Remove(rowToDelete);
+                    db.SaveChanges();
+                    HomePage page = new HomePage();
+                    page.Show();
+                    this.Close();
+                }
+            }
         }
     }
 }

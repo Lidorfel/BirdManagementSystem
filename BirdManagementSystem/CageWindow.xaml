@@ -53,18 +53,18 @@
                     <DropShadowEffect/>
                 </TextBlock.Effect>
             </TextBlock>
-            <TextBlock TextWrapping="Wrap" Text="Cage Serial Number : " Margin="22,129,628,264" Foreground="#DDFFFFFF" IsEnabled="False"/>
+            <TextBlock TextWrapping="Wrap" Text="Cage Serial Number : " Margin="22,90,628,303" Foreground="#DDFFFFFF" IsEnabled="False"/>
             <StackPanel/>
-            <TextBlock TextWrapping="Wrap" Text="Dimensions : " Margin="22,175,692,217" Foreground="#DDFFFFFF" IsEnabled="False"/>
-            <TextBlock TextWrapping="Wrap" Text="Material : " Margin="22,222,700,163" Foreground="#DDFFFFFF" IsEnabled="False"/>
-            <TextBlock x:Name="CageSN" TextWrapping="Wrap" Margin="172,129,548,264" Foreground="#DDBDBDBD" IsEnabled="False"/>
-            <TextBlock x:Name="CageDimension" TextWrapping="Wrap" Margin="108,175,565,212" Foreground="#DDBDBDBD" IsEnabled="False"/>
-            <TextBlock x:Name="CageMaterial" TextWrapping="Wrap" Margin="100,222,614,163" Foreground="#DDBDBDBD" IsEnabled="False"/>
+            <TextBlock TextWrapping="Wrap" Text="Dimensions : " Margin="22,136,692,256" Foreground="#DDFFFFFF" IsEnabled="False"/>
+            <TextBlock TextWrapping="Wrap" Text="Material : " Margin="22,183,700,202" Foreground="#DDFFFFFF" IsEnabled="False"/>
+            <TextBlock x:Name="CageSN" TextWrapping="Wrap" Margin="172,90,548,303" Foreground="#DDBDBDBD" IsEnabled="False"/>
+            <TextBlock x:Name="CageDimension" TextWrapping="Wrap" Margin="108,136,565,251" Foreground="#DDBDBDBD" IsEnabled="False"/>
+            <TextBlock x:Name="CageMaterial" TextWrapping="Wrap" Margin="100,183,614,202" Foreground="#DDBDBDBD" IsEnabled="False"/>
 
 
         </Grid>
-        <Button x:Name="ShowBirdsBtn" Content="Show Birds" Margin="23,249,604,96" Background="#FFCC6E06" Foreground="#DDFFFFFF" Click="ShowBirdsBtn_Click"/>
-        <Image x:Name="CagePicture" Visibility="Visible" Source="Images/CageImage.png" RenderTransformOrigin="0.5,0.5" Opacity="0.7" Height="198" Width="198" Margin="466,101,136,135" >
+        <Button x:Name="ShowBirdsBtn" Content="Show Birds" Margin="23,246,604,172" Background="#FFCC6E06" Foreground="#DDFFFFFF" Click="ShowBirdsBtn_Click"/>
+        <Image x:Name="CagePicture" Visibility="Visible" Source="Images/CageImage.png" RenderTransformOrigin="0.5,0.5" Opacity="0.7" Height="198" Width="198" Margin="540,109,62,143" >
             <Image.Effect>
                 <DropShadowEffect/>
             </Image.Effect>
@@ -88,8 +88,23 @@
             </DataGrid.Background>
 
         </DataGrid>
-        <Button x:Name="backToHomePage" Content="Home Page" Margin="23,325,604,44" Background="#FFCC6E06" Foreground="#DDFFFFFF" Click="backToHomePage_Click"/>
-
+        <Button x:Name="backToHomePage" Content="Home Page" Margin="23,293,604,125" Background="#FFCC6E06" Foreground="#DDFFFFFF" Click="backToHomePage_Click"/>
+        <Button x:Name="UpdateCageBtn" Content="Update Cage" Margin="23,340,604,78" Background="#FFCC6E06" Foreground="#DDFFFFFF" Click="UpdateCageBtn_Click"/>
+        <Grid x:Name="UpdateFieldsGrid" Visibility="Collapsed">
+            <TextBox x:Name="NewCageSerialNumber" materialDesign:HintAssist.Hint="Cage Serial Number"  Foreground="white" BorderBrush="white" CaretBrush="#FFD94448" SelectionBrush="#ffd94448" Margin="266,91,290,324"/>
+            <TextBox x:Name="NewCageWidth" materialDesign:HintAssist.Hint="Width"  Foreground="white" BorderBrush="white" CaretBrush="#FFD94448" SelectionBrush="#ffd94448" Margin="266,162,456,252" />
+            <TextBox x:Name="NewCageLength" materialDesign:HintAssist.Hint="Length"  Foreground="white" BorderBrush="white" CaretBrush="#FFD94448" SelectionBrush="#ffd94448" Margin="350,162,372,252" />
+            <TextBox  x:Name="NewCageHeight" materialDesign:HintAssist.Hint="Height"  Foreground="white" BorderBrush="white" CaretBrush="#FFD94448" SelectionBrush="#ffd94448" Margin="434,162,290,252" />
+            <ComboBox x:Name="NewCageMaterialSelect" HorizontalAlignment="Left" Margin="266,236,0,0" VerticalAlignment="Top" Width="244" BorderBrush="White" materialDesign:HintAssist.Hint="Cage Material" Foreground="#FFCC6E06">
+                <ComboBoxItem Content="Iron"/>
+                <ComboBoxItem Content="Wood"/>
+                <ComboBoxItem Content="Plastic"/>
+            </ComboBox>
+            <TextBlock x:Name="NewCageSerialNumberError" FontFamily="Eras ITC" Text="" Foreground="Red" Margin="266,128,290,291" TextWrapping="Wrap"/>
+            <TextBlock x:Name="NewCageDimensionError" FontFamily="Eras ITC" Text="" Foreground="Red" Margin="266,200,290,219" TextWrapping="Wrap"/>
+            <TextBlock x:Name="NewCageMaterialSelectError" FontFamily="Eras ITC" Text="" Foreground="Red" Margin="266,262,290,168" TextWrapping="Wrap"/>
+            <Button x:Name="UpdateDetails" Content="Update" Margin="266,293,361,125" Background="#FFCC6E06" Foreground="#DDFFFFFF" Click="UpdateDetails_Click"/>
+        </Grid>
 
     </Grid>
 </Window>
