@@ -98,6 +98,24 @@ namespace BirdManagementSystem
             NewCageLength.Text = self.Length.ToString();
             UpdateCageBtn.Visibility = Visibility.Collapsed;
             UpdateFieldsGrid.Visibility = Visibility.Visible;
+            NewCageSerialNumber.Text= self.SerialNumber.ToString();
+            NewCageHeight.Text= self.Height.ToString();
+            NewCageLength.Text= self.Length.ToString();
+            NewCageWidth.Text= self.Width.ToString();
+            if (self.CageMaterial == "Iron")
+            {
+                NewCageMaterialSelect.SelectedIndex = 0;
+            }
+            else if(self.CageMaterial == "Wood")
+            {
+                NewCageMaterialSelect.SelectedIndex = 1;
+
+            }
+            else
+            {
+                NewCageMaterialSelect.SelectedIndex = 2;
+
+            }
         }
 
         private void UpdateDetails_Click(object sender, RoutedEventArgs e)

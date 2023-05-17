@@ -38,13 +38,6 @@ namespace BirdManagementSystem
         private void LoginBtn_Click(object sender, RoutedEventArgs e)
         {
             // Read data from the Excel file
-
-
-
-
-
-
-
             Trace.WriteLine("hello world");
             string username = UserName.Text;
             string password = Password.Password;
