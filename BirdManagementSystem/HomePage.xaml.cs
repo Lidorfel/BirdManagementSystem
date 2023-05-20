@@ -881,6 +881,13 @@ namespace BirdManagementSystem
                     /*mainPage.mainFrame.Content = page;*/
                 }
             }
-        }  
+        }
+        private void BirdsInCageGrid_AutoGenerationColumn(Object sender, DataGridAutoGeneratingColumnEventArgs e)
+        {
+            if (e.PropertyName == "Id")
+            {
+                e.Cancel = true;
+            }
+        }
     }
 }

@@ -56,6 +56,17 @@ namespace BirdManagementSystem
                 this.FatherSerial.Visibility = Visibility.Visible;
                 this.MotherSerial.Visibility = Visibility.Collapsed;
             }
+
+
+            BirdSerialUpdate.Text = "";
+            CageSerialUpdate.Text = "";
+            BirdSerialUpdate.Visibility = Visibility.Collapsed;
+            CageSerialUpdate.Visibility = Visibility.Collapsed;
+            UpdateDetails.Visibility = Visibility.Collapsed;
+            deleteBird.Visibility = Visibility.Collapsed;
+            CurrentBirdSN.Visibility = Visibility.Visible;
+            CurrentCageSN.Visibility = Visibility.Visible;
+            UpdateBirdBtn.Visibility = Visibility.Visible;
         }
         private bool checkSN(string s)
         {
@@ -212,6 +223,8 @@ namespace BirdManagementSystem
             CurrentBirdSN.Visibility = Visibility.Collapsed;
             CurrentCageSN.Visibility = Visibility.Collapsed;
             UpdateBirdBtn.Visibility = Visibility.Collapsed;
+            this.ChickFields.Visibility = Visibility.Collapsed;
+            this.AddChickBtn.Visibility = Visibility.Visible;
         }
 
         private void UpdateDetails_Click(object sender, RoutedEventArgs e)

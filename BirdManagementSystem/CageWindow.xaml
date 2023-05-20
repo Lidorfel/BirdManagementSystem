@@ -78,7 +78,7 @@
             </Image.RenderTransform>
         </Image>
 
-        <DataGrid Visibility="Collapsed" x:Name="BirdsInCageGrid" d:ItemsSource="{d:SampleData ItemCount=0}" Margin="236,111,39,107" RenderTransformOrigin="0.51,0.963" SelectionChanged="BirdsInCageGrid_SelectionChanged" >
+        <DataGrid Visibility="Collapsed" x:Name="BirdsInCageGrid" d:ItemsSource="{d:SampleData ItemCount=0}" Margin="236,111,39,107" RenderTransformOrigin="0.51,0.963" SelectionChanged="BirdsInCageGrid_SelectionChanged" AutoGeneratingColumn="BirdsInCageGrid_AutoGenerationColumn">
             <DataGrid.Background>
                 <LinearGradientBrush EndPoint="0.5,4" StartPoint="0.5,0" SpreadMethod="Pad">
                     <GradientStop Color="#FF0C0C4C" Offset="0.285"/>

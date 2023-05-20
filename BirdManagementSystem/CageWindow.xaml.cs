@@ -40,6 +40,7 @@ namespace BirdManagementSystem
         }
         private void ShowBirdsBtn_Click(object sender, RoutedEventArgs e)
         {
+            UpdateCageBtn.Visibility = Visibility.Visible;
             UpdateFieldsGrid.Visibility=Visibility.Collapsed;
             BirdManagementDBEntities db = new BirdManagementDBEntities();
             var docs = from b in db.Birds
@@ -117,7 +118,6 @@ namespace BirdManagementSystem
 
             }
         }
-
         private void UpdateDetails_Click(object sender, RoutedEventArgs e)
         {
             string[] matChoiceArr = { "Iron", "Wood", "Plastic" };
@@ -150,7 +150,6 @@ namespace BirdManagementSystem
                 flag = false;
                 NewCageMaterialSelectError.Text = "Cage Exists!";
             }
-
             if (flag)
             {
                 string matChoice = matChoiceArr[NewCageMaterialSelect.SelectedIndex];
@@ -171,6 +170,10 @@ namespace BirdManagementSystem
                 if (cage!=null)
                 {
                     cage.SerialNumber = newSerialNumber;
+                    cage.Width = newCageWidth;
+                    cage.Height = newCageHeight;
+                    cage.Length = newCageLength;
+                    cage.CageMaterial = matChoice;
                 }
                 db.SaveChanges();
                 CageWindow page = new CageWindow(cage);
@@ -178,39 +181,12 @@ namespace BirdManagementSystem
                 this.Close();
             }
         }
-        private System.Data.DataTable toDataTableBirds(List<Bird> birds)
+        private void BirdsInCageGrid_AutoGenerationColumn(Object sender,DataGridAutoGeneratingColumnEventArgs e)
         {
-            System.Data.DataTable dataTable = new System.Data.DataTable();
-
-            // Add columns to the DataTable
-
-            dataTable.Columns.Add("Serial Number", typeof(string));
-            dataTable.Columns.Add("Species", typeof(string));
-            dataTable.Columns.Add("SubSpecies", typeof(string));
-            dataTable.Columns.Add("Cage", typeof(string));
-            dataTable.Columns.Add("Gender", typeof(string));
-            dataTable.Columns.Add("Father", typeof(string));
-            dataTable.Columns.Add("Mother", typeof(string));
-            dataTable.Columns.Add("Hatch Date", typeof(DateTime));
-
-
-            // Add rows to the DataTable
-            foreach (Bird bird in birds)
+            if (e.PropertyName == "Id")
             {
-                DataRow row = dataTable.NewRow();
-                row["Serial Number"] = bird.SerialNumber;
-                row["Species"] = bird.Species;
-                row["SubSpecies"] = bird.SubSpecies;
-                row["Cage"] = bird.Cage;
-                row["Gender"] = bird.Gender;
-                row["Father"] = bird.Father;
-                row["Mother"] = bird.Mother;
-                row["Hatch Date"] = bird?.HatchDate;
-                dataTable.Rows.Add(row);
+                e.Cancel=true;
             }
-            return dataTable;
         }
     }
-
-
 }
