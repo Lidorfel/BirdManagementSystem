@@ -66,7 +66,7 @@
                         <ComboBoxItem>Male</ComboBoxItem>
                         <ComboBoxItem>Female</ComboBoxItem>
                     </ComboBox>
-                    <TextBox TextChanged="CageSerialChanged" x:Name="CageSerial" Margin="323,225,114,195" materialDesign:HintAssist.Hint="Enter Cage Serial Numnber"  Foreground="white" Width="250" Height="30" BorderBrush="white" CaretBrush="#FFD94448" SelectionBrush="#ffd94448"/>
+                    <TextBox TextChanged="CageSerialChanged" x:Name="CageSerial" Margin="323,225,114,195" materialDesign:HintAssist.Hint="Enter Cage Serial Number"  Foreground="white" Width="250" Height="30" BorderBrush="white" CaretBrush="#FFD94448" SelectionBrush="#ffd94448"/>
                     <TextBox TextChanged="FatherSerialChanged" x:Name="FatherSerial" Margin="26,296,411,124" materialDesign:HintAssist.Hint="Enter Father Serial Number"  Foreground="white" Width="250" Height="30" BorderBrush="white" CaretBrush="#FFD94448" SelectionBrush="#ffd94448"/>
                     <TextBox TextChanged="MotherSerialChanged"  x:Name="MotherSerial" Margin="323,296,114,124" materialDesign:HintAssist.Hint="Enter Mother Serial Number"  Foreground="white" Width="250" Height="30" BorderBrush="white" CaretBrush="#FFD94448" SelectionBrush="#ffd94448"/>
 
