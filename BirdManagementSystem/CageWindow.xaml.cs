@@ -156,6 +156,11 @@ namespace BirdManagementSystem
                 Double.TryParse(cageWidthText, out newCageWidth);
                 Double.TryParse(cageHeightText, out newCageHeight);
                 Double.TryParse(cageLengthText, out newCageLength);
+                if (!goodDimension(newCageWidth, newCageHeight, newCageLength))
+                {
+                    NewCageDimensionError.Text = "Dimension must be a number between 15 to 2000!";
+                    return;
+                }
                 BirdManagementDBEntities db = new BirdManagementDBEntities();
                 var birdsInCage = from b in db.Birds
                                   where b.Cage == self.SerialNumber
@@ -187,6 +192,10 @@ namespace BirdManagementSystem
             {
                 e.Cancel=true;
             }
+        }
+        private bool goodDimension(double d1, double d2, double d3)
+        {
+            return (d1 >= 15 && d1 <= 2000) && (d2 >= 15 && d2 <= 2000) && (d2 >= 15 && d2 <= 2000);
         }
     }
 }
