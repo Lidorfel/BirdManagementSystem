@@ -61,9 +61,9 @@
             <TextBlock x:Name="CurrentSubSpecies" TextWrapping="Wrap" Margin="183,177,574,373" Foreground="#DDBDBDBD" IsEnabled="False" Text=""/>
             <TextBlock x:Name="addNewChickSuccess" TextWrapping="Wrap" Margin="432,465,262,71" Foreground="#FF209B0A" TextAlignment="Center" FontSize="16"/>
             <TextBox Visibility="Collapsed" x:Name="BirdSerialUpdate" Margin="153,94,574,482" materialDesign:HintAssist.Hint="New Bird Serial Number"  Foreground="white" BorderBrush="white" CaretBrush="#FFD94448" SelectionBrush="#ffd94448"/>
-            <TextBlock x:Name="BirdSerialUpdateError" TextWrapping="Wrap" Text="" Margin="153,121,574,456" Foreground="#FFEF1717"/>
+            <TextBlock x:Name="BirdSerialUpdateError" TextWrapping="Wrap" Text="" Margin="153,121,531,456" Foreground="#FFEF1717"/>
             <TextBox Visibility="Collapsed" x:Name="CageSerialUpdate" Margin="153,290,574,286" materialDesign:HintAssist.Hint="Bird's new cage SN"  Foreground="white" BorderBrush="white" CaretBrush="#FFD94448" SelectionBrush="#ffd94448"/>
-            <TextBlock x:Name="CageSerialUpdateError" TextWrapping="Wrap" Text="" Margin="153,319,574,249" Foreground="#FFEF1717"/>
+            <TextBlock x:Name="CageSerialUpdateError" TextWrapping="Wrap" Text="" Margin="153,319,555,249" Foreground="#FFEF1717"/>
         </Grid>
         <Button x:Name="AddChickBtn" Content="Add Chick" Margin="21,332,763,220" Background="#FFCC6E06" Foreground="#DDFFFFFF" Click="AddChickBtn_Click">
             <Button.Effect>
@@ -85,7 +85,7 @@
                 <DropShadowEffect/>
             </Button.Effect>
         </Button>
-        <Button Visibility="Collapsed" x:Name="deleteBird" Content="Dead X" Margin="176,398,608,170" Background="#FFCC6E06" Foreground="#DDFFFFFF" Click="deleteBird_Click" >
+        <Button Visibility="Collapsed" x:Name="deleteBird" Content="Remove" Margin="176,398,608,170" Background="#FFCC6E06" Foreground="#DDFFFFFF" Click="deleteBird_Click" >
             <Button.Effect>
                 <DropShadowEffect/>
             </Button.Effect>

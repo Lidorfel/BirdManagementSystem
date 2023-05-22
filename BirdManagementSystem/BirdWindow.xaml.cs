@@ -229,54 +229,59 @@ namespace BirdManagementSystem
 
         private void UpdateDetails_Click(object sender, RoutedEventArgs e)
         {
+            BirdSerialUpdateError.Text = "";
+            CageSerialUpdateError.Text = "";
             string newBirdSN=BirdSerialUpdate.Text;
             string newCageSN=CageSerialUpdate.Text;
-            /*bool flag=true;*/
+            bool flag = true;
             if (newBirdSN == "")
             {
                 BirdSerialUpdateError.Text = "Cannot be empty";
-                return;
+                flag = false;
 
             }
             if (newBirdSN.All(Char.IsDigit) == false)
             {
                 BirdSerialUpdateError.Text = "Bird SN must contain only digits";
-                return;
+                flag= false;
             }
             if (birdExists(newBirdSN))
             {
                 if (newBirdSN != self.SerialNumber)
                 {
                     BirdSerialUpdateError.Text = "Bird already exist!";
-                    return;
+                    flag = false;
                 }
             }
             if (newCageSN == "")
             {
                 CageSerialUpdateError.Text = "Cannot be empty";
-                return;
+                flag = false;
             }
             if (!checkCageSerialNumberValidation(newCageSN))
             {
                 CageSerialUpdateError.Text = "Cage SN must contain letters and digits";
-                return;
+                flag = false;
             }
             if (!cageExists(newCageSN))
             {
                 CageSerialUpdateError.Text = "New Cage doesnt exist";
-                return;
+                flag = false;
             }
-            BirdManagementDBEntities db = new BirdManagementDBEntities();
-            var bird = from b in db.Birds
-                       where b.Id == self.Id
-                       select b;
-            Bird me = bird.ToList()[0];
-            me.SerialNumber = newBirdSN;
-            me.Cage = newCageSN;
-            db.SaveChanges();
-            BirdWindow page=new BirdWindow(me);
-            page.Show();
-            this.Close();
+            if (flag)
+            {
+                BirdManagementDBEntities db = new BirdManagementDBEntities();
+                var bird = from b in db.Birds
+                           where b.Id == self.Id
+                           select b;
+                Bird me = bird.ToList()[0];
+                me.SerialNumber = newBirdSN;
+                me.Cage = newCageSN;
+                db.SaveChanges();
+                BirdWindow page = new BirdWindow(me);
+                page.Show();
+                this.Close();
+            }
         }
         private bool cageExists(string cageSerial)
         {
