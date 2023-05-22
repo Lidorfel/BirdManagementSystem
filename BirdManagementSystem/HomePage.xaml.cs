@@ -396,6 +396,14 @@ namespace BirdManagementSystem
                 NewCageDimensionError.Text = "Dimension must be a number!";
                 flag = false;
             }
+            if ((Double.TryParse(cageWidthText, out newCageWidth) && Double.TryParse(cageHeightText, out newCageHeight) && Double.TryParse(cageLengthText, out newCageLength)))
+            {
+                if (!goodDimension(newCageWidth, newCageHeight, newCageLength))
+                {
+                    NewCageDimensionError.Text = "Dimension must be a number between 15 to 2000!";
+                    flag = false;
+                }
+            }
             if (NewCageMaterialSelect.SelectedIndex == -1)
             {
                 NewCageMaterialSelectError.Text = "You must choose the cage's material!";
@@ -413,11 +421,6 @@ namespace BirdManagementSystem
                 Double.TryParse(cageWidthText, out newCageWidth);
                 Double.TryParse(cageHeightText, out newCageHeight);
                 Double.TryParse(cageLengthText, out newCageLength);
-                if(!goodDimension(newCageWidth, newCageHeight, newCageLength))
-                {
-                    NewCageDimensionError.Text = "Dimension must be a number between 15 to 2000!";
-                    return;
-                }
                 BirdManagementDBEntities db = new BirdManagementDBEntities();
                 Cage newCage = new Cage()
                 {
