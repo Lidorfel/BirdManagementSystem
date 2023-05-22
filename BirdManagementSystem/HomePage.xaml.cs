@@ -899,7 +899,7 @@ namespace BirdManagementSystem
         }
         private bool goodDimension(double d1,double d2,double d3)
         {
-            return (d1 >= 15 && d1 <= 2000) && (d2 >= 15 && d2 <= 2000) && (d2 >= 15 && d2 <= 2000);
+            return (d1 >= 15 && d1 <= 2000) && (d2 >= 15 && d2 <= 2000) && (d3 >= 15 && d3 <= 2000);
         }
     }
 }
