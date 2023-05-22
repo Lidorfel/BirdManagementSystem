@@ -134,61 +134,6 @@ namespace BirdManagementSystem
                 return false;
             }
 
-/*
-
-
-
-
-
-
-
-
-            // ...
-
-            // Specify the path of the Excel file
-            string fileNmae = "User.xlsx";
-            string filePath = System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, fileNmae);
-            //"C:\Users\LasTa\source\repos\LoginExerciseing\LoginExerciseing\Users.xlsx"
-
-            string connectionString = @"Provider=Microsoft.ACE.OLEDB.12.0;Data Source=..\..\Users.xlsx;Extended Properties='Excel 12.0 Xml;HDR=YES;'";
-
-
-
-            // Create the connection object
-            using (OleDbConnection connection = new OleDbConnection(connectionString))
-            {
-                // Open the connection
-                connection.Open();
-
-                // Create the command object with the SQL query to read data from the worksheet
-                OleDbCommand command = new OleDbCommand("SELECT * FROM [Sheet1$]", connection);
-
-
-
-                // Create the data adapter object to fill a DataTable with the data from the worksheet
-                OleDbDataAdapter dataAdapter = new OleDbDataAdapter(command);
-                DataTable dataTable = new DataTable();
-
-                // Fill the DataTable with the data from the worksheet
-                dataAdapter.Fill(dataTable);
-
-                // Loop through the rows in the DataTable and process the data
-                foreach (DataRow row in dataTable.Rows)
-                {
-                    string value1 = row["Username"].ToString();
-                    string value2 = row["Password"].ToString();
-                    if (username == value1 && password == value2)
-                    {
-                        connection.Close();
-                        return true;
-
-                    }
-                    // Do something with the values...
-                }
-                connection.Close();
-            }
-            return false; // If no match found, return false*/
-
         }
 
         private Dictionary<string, string> ReadUsernamesAndPasswords(string filePath)

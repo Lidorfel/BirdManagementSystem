@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.EntityFrameworkCore.Internal;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Data;
@@ -103,24 +104,13 @@ namespace BirdManagementSystem
             NewCageHeight.Text= self.Height.ToString();
             NewCageLength.Text= self.Length.ToString();
             NewCageWidth.Text= self.Width.ToString();
-            if (self.CageMaterial == "Iron")
-            {
-                NewCageMaterialSelect.SelectedIndex = 0;
-            }
-            else if(self.CageMaterial == "Wood")
-            {
-                NewCageMaterialSelect.SelectedIndex = 1;
+            string[] matChoiceArr = { "Iron", "Wood", "Plastic" };
+            NewCageMaterialSelect.SelectedIndex = matChoiceArr.IndexOf(self.CageMaterial);
 
-            }
-            else
-            {
-                NewCageMaterialSelect.SelectedIndex = 2;
-
-            }
         }
         private void UpdateDetails_Click(object sender, RoutedEventArgs e)
         {
-            string[] matChoiceArr = { "Iron", "Wood", "Plastic" };
+            string[] matChoiceArr = { "Iron", "Wood", "Plastic" }; 
             NewCageMaterialSelectError.Text = "";
             NewCageDimensionError.Text = "";
             NewCageSerialNumberError.Text = "";

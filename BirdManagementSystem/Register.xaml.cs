@@ -100,21 +100,6 @@ namespace BirdManagementSystem
 
         private void Registiration(string user, string pass, string id)
         {
-            /*            string fileNmae = "User.xlsx";
-                        string filePath = System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, fileNmae);
-
-                        //"C:\Users\LasTa\source\repos\LoginExerciseing\LoginExerciseing\Users.xlsx"
-                        string connectionString = @"Provider=Microsoft.ACE.OLEDB.12.0;Data Source=..\..\..\Users.xlsx;Extended Properties='Excel 12.0 Xml;HDR=YES;'";
-                        using (OleDbConnection connection = new OleDbConnection(connectionString))
-                        {
-                            connection.Open();
-                            OleDbCommand command1 = new OleDbCommand("INSERT INTO [Sheet1$] ([Username], [Password],[ID]) VALUES (@Username, @Password,@ID)", connection);
-                            command1.Parameters.AddWithValue("@Username", user); // replace "newuser" with the actual username you want to insert
-                            command1.Parameters.AddWithValue("@Password", pass);
-                            command1.Parameters.AddWithValue("@ID", id);
-                            // replace "newpassword" with the actual password you want to insert
-                            int rowsAffected = command1.ExecuteNonQuery();
-                        }*/
 
             ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
             string filePath = @"..\..\Users.xlsx";
@@ -145,47 +130,6 @@ namespace BirdManagementSystem
 
         private bool UserExists(string username)
         {
-            /*            string fileNmae = "User.xlsx";
-                        string filePath = System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, fileNmae);
-                        string excelPath = @"C:\Users\LasTa\Desktop\Users.xlsx";
-                        //"C:\Users\LasTa\source\repos\LoginExerciseing\LoginExerciseing\Users.xlsx"
-                        string connectionString = @"Provider=Microsoft.ACE.OLEDB.12.0;Data Source=..\..\..\Users.xlsx;Extended Properties='Excel 12.0 Xml;HDR=YES;'";
-
-
-
-                        // Create the connection object
-                        using (OleDbConnection connection = new OleDbConnection(connectionString))
-                        {
-                            // Open the connection
-                            connection.Open();
-
-                            // Create the command object with the SQL query to read data from the worksheet
-                            OleDbCommand command = new OleDbCommand("SELECT * FROM [Sheet1$]", connection);
-
-
-
-                            // Create the data adapter object to fill a DataTable with the data from the worksheet
-                            OleDbDataAdapter dataAdapter = new OleDbDataAdapter(command);
-                            DataTable dataTable = new DataTable();
-
-                            // Fill the DataTable with the data from the worksheet
-                            dataAdapter.Fill(dataTable);
-
-                            // Loop through the rows in the DataTable and process the data
-                            foreach (DataRow row in dataTable.Rows)
-                            {
-                                string value1 = row["Username"].ToString();
-                                if (username == value1)
-                                {
-                                    connection.Close();
-                                    return true;
-
-                                }
-                                // Do something with the values...
-                            }
-                            connection.Close();
-                        }
-                        return false; // If no match found, return false*/
             var filePath = @"..\..\Users.xlsx";
             var data = ReadUsernamesAndPasswords(filePath);
 
