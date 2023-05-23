@@ -109,7 +109,7 @@
                             </Image.RenderTransform>
                         </Image>
                     </StackPanel>
-                    <TextBox x:Name="NewCageSerialNumber" materialDesign:HintAssist.Hint="Cage Serial Number"  Foreground="white" BorderBrush="white" CaretBrush="#FFD94448" SelectionBrush="#ffd94448" Margin="49,121,393,294" TextChanged="NewCageSerialNumber_TextChanged"/>
+                    <TextBox x:Name="NewCageSerialNumber" materialDesign:HintAssist.Hint="Cage Serial Number"  Foreground="white" BorderBrush="white" CaretBrush="#FFD94448" SelectionBrush="#ffd94448" Margin="49,121,393,294"/>
                     <TextBox x:Name="NewCageWidth" materialDesign:HintAssist.Hint="Width"  Foreground="white" BorderBrush="white" CaretBrush="#FFD94448" SelectionBrush="#ffd94448" Margin="49,192,560,222" />
                     <TextBox x:Name="NewCageLength" materialDesign:HintAssist.Hint="Length"  Foreground="white" BorderBrush="white" CaretBrush="#FFD94448" SelectionBrush="#ffd94448" Margin="133,192,476,222" />
                     <TextBox  x:Name="NewCageHeight" materialDesign:HintAssist.Hint="Height"  Foreground="white" BorderBrush="white" CaretBrush="#FFD94448" SelectionBrush="#ffd94448" Margin="218,192,394,222" />

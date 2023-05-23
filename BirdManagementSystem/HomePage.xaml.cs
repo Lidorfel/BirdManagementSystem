@@ -353,9 +353,9 @@ namespace BirdManagementSystem
                 flag1 = true;
                 
             }
-            if (!flag1 && !checkCageSerialNumberValidation(serialNumber) && serialNumber != "" && cageExists(serialNumber))
+            if (cageExists(serialNumber))
             {
-                errorMessage = "Cage does not exist";
+                errorMessage = "Cage already exist";
                 flag1 = true;
 
             }
@@ -412,7 +412,7 @@ namespace BirdManagementSystem
             if (cageExists(newSerialNumber))
             {
                 flag = false;
-                NewCageMaterialSelectError.Text = "Cage Exists!";
+                NewCageSerialNumberError.Text = "Cage Exists!";
             }
             
             if (flag)
