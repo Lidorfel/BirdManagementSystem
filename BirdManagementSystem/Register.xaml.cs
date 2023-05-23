@@ -40,11 +40,6 @@ namespace BirdManagementSystem
             string errorMessage = " ";
 
 
-            string caption = "Word Processor";
-            MessageBoxButton button = MessageBoxButton.OK;
-            MessageBoxImage icon = MessageBoxImage.Warning;
-            MessageBoxResult result;
-
             if (!flag && UserExists(username))
             {
                 errorMessage = "User Already Exists";

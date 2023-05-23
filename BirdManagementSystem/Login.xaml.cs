@@ -46,11 +46,6 @@ namespace BirdManagementSystem
             string errorMessage = "";
 
 
-            string caption = "Word Processor";
-            MessageBoxButton button = MessageBoxButton.OK;
-            MessageBoxImage icon = MessageBoxImage.Warning;
-            MessageBoxResult result;
-
 
             if (!Regex.IsMatch(username, @"^[a-zA-Z0-9]+$"))
             {
