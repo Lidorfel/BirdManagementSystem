@@ -23,9 +23,11 @@ namespace BirdManagementSystem
     public partial class CageWindow : Window
     {
         private Cage self;
+        private BirdManagementDBEntities db;
         public CageWindow()
         {
             InitializeComponent();
+            db = new BirdManagementDBEntities();
         }
         public CageWindow(Cage c)
         {
@@ -37,13 +39,14 @@ namespace BirdManagementSystem
                 this.CageMaterial.Text = c.CageMaterial;
                 string dimension = "W:" + c.Width.ToString() + ", L:" + c.Length.ToString() + ", H:" + c.Height.ToString();
                 this.CageDimension.Text = dimension;
+                db = new BirdManagementDBEntities();
+
             }
         }
         private void ShowBirdsBtn_Click(object sender, RoutedEventArgs e)
         {
             UpdateCageBtn.Visibility = Visibility.Visible;
             UpdateFieldsGrid.Visibility=Visibility.Collapsed;
-            BirdManagementDBEntities db = new BirdManagementDBEntities();
             var docs = from b in db.Birds
                        where b.Cage == self.SerialNumber
                        select b;
@@ -83,7 +86,6 @@ namespace BirdManagementSystem
         }
         private bool cageExists(string cageSerial)
         {
-            BirdManagementDBEntities db = new BirdManagementDBEntities();
             var cages = from c in db.Cages
                         where c.SerialNumber == cageSerial
                         select c;
@@ -151,7 +153,6 @@ namespace BirdManagementSystem
                     NewCageDimensionError.Text = "Dimension must be a number between 15 to 2000!";
                     return;
                 }
-                BirdManagementDBEntities db = new BirdManagementDBEntities();
                 var birdsInCage = from b in db.Birds
                                   where b.Cage == self.SerialNumber
                                   select b;

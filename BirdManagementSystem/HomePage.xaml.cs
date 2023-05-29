@@ -32,13 +32,13 @@ namespace BirdManagementSystem
         private bool BirdCantAdvance2 = true;
         private bool BirdCantAdvance3 = true;
         private bool BirdCantAdvance4 = true;
+        private BirdManagementDBEntities db;
 
-        
         public HomePage()
         {
             InitializeComponent();
             HatchDate.DisplayDateEnd = DateTime.Now;
-
+            db = new BirdManagementDBEntities();
         }
         private void ExitBtn_Click(object sender, RoutedEventArgs e)
         {
@@ -293,7 +293,6 @@ namespace BirdManagementSystem
                     if (cageExists(newCageSerialNumber))
                     {
 
-                        BirdManagementDBEntities db = new BirdManagementDBEntities();
                         Bird newBird = new Bird()
                         {
                             SerialNumber = newSerialNumber,
@@ -423,7 +422,6 @@ namespace BirdManagementSystem
                 Double.TryParse(cageWidthText, out newCageWidth);
                 Double.TryParse(cageHeightText, out newCageHeight);
                 Double.TryParse(cageLengthText, out newCageLength);
-                BirdManagementDBEntities db = new BirdManagementDBEntities();
                 Cage newCage = new Cage()
                 {
                     SerialNumber = newSerialNumber,
@@ -464,7 +462,6 @@ namespace BirdManagementSystem
 
             string SelectedCageSerial = SearchCageSN.Text;
             Trace.WriteLine(SelectedCageSerial);
-            BirdManagementDBEntities db = new BirdManagementDBEntities();
             var cages = from d in db.Cages
                         select d;
 
@@ -626,7 +623,6 @@ namespace BirdManagementSystem
             else
                 SelectedBirdGender = "";
 
-            BirdManagementDBEntities db = new BirdManagementDBEntities();
             var birds = from b in db.Birds
                         select b;
 
@@ -832,7 +828,6 @@ namespace BirdManagementSystem
 
         private bool cageExists(string cageSerial)
         {
-            BirdManagementDBEntities db = new BirdManagementDBEntities();
             var cages = from c in db.Cages
                         where c.SerialNumber == cageSerial
                         select c;
@@ -842,7 +837,6 @@ namespace BirdManagementSystem
         }
         private bool birdExists(string birdSerial)
         {
-            BirdManagementDBEntities db = new BirdManagementDBEntities();
             var birds = from b in db.Birds
                         where b.SerialNumber == birdSerial
                         select b;
@@ -851,7 +845,6 @@ namespace BirdManagementSystem
         }
         private string getBirdGender(string birdSN)
         {
-            BirdManagementDBEntities db = new BirdManagementDBEntities();
             var birds = from b in db.Birds
                         where b.SerialNumber == birdSN
                         select b;

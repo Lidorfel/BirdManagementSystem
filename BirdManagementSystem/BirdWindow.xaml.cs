@@ -23,9 +23,11 @@ namespace BirdManagementSystem
     public partial class BirdWindow : Window
     {
         private Bird self;
+        private BirdManagementDBEntities db;
         public BirdWindow()
         {
             InitializeComponent();
+            db = new BirdManagementDBEntities();
         }
         public BirdWindow(Bird b)
         {
@@ -38,6 +40,8 @@ namespace BirdManagementSystem
             this.CurrentSpecies.Text = b.Species;
             this.CurrentSubSpecies.Text = b.SubSpecies;
             HatchDate.DisplayDateEnd = DateTime.Now;
+            db = new BirdManagementDBEntities();
+
         }
         private void AddChickBtn_Click(object sender, RoutedEventArgs e)
         {
@@ -115,7 +119,6 @@ namespace BirdManagementSystem
             if (flag)
             {
                 // one of them is ""
-                BirdManagementDBEntities db = new BirdManagementDBEntities();
                 var docs = from b in db.Birds
                            where b.SerialNumber == sn
                            select b;
@@ -142,7 +145,6 @@ namespace BirdManagementSystem
                 string SecParentSN;
                 DateTime newDate = (DateTime)HatchDate.SelectedDate;
                 Nullable<System.DateTime> d = new Nullable<System.DateTime>(newDate);
-                BirdManagementDBEntities db = new BirdManagementDBEntities();
                 Bird newBird;
                 if (self.Gender == "Male")
                 {
@@ -270,7 +272,6 @@ namespace BirdManagementSystem
             }
             if (flag)
             {
-                BirdManagementDBEntities db = new BirdManagementDBEntities();
                 var bird = from b in db.Birds
                            where b.Id == self.Id
                            select b;
@@ -285,7 +286,6 @@ namespace BirdManagementSystem
         }
         private bool cageExists(string cageSerial)
         {
-            BirdManagementDBEntities db = new BirdManagementDBEntities();
             var cages = from c in db.Cages
                         where c.SerialNumber == cageSerial
                         select c;
@@ -295,7 +295,6 @@ namespace BirdManagementSystem
         }
         private bool birdExists(string birdSerial)
         {
-            BirdManagementDBEntities db = new BirdManagementDBEntities();
             var birds = from b in db.Birds
                         where b.SerialNumber == birdSerial
                         select b;
@@ -314,7 +313,6 @@ namespace BirdManagementSystem
             // Check what the user chose
             if (result == MessageBoxResult.Yes)
             {
-                BirdManagementDBEntities db = new BirdManagementDBEntities();
                 var rowToDelete = db.Birds.FirstOrDefault(row => row.Id == self.Id);
                 // Check if the row exists
                 if (rowToDelete != null)
