@@ -32,11 +32,13 @@ namespace BirdManagementSystem
         private bool BirdCantAdvance2 = true;
         private bool BirdCantAdvance3 = true;
         private bool BirdCantAdvance4 = true;
+
         
         public HomePage()
         {
             InitializeComponent();
             HatchDate.DisplayDateEnd = DateTime.Now;
+
         }
         private void ExitBtn_Click(object sender, RoutedEventArgs e)
         {
