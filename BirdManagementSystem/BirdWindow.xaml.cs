@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data.Entity.Validation;
+using System.Diagnostics;
 using System.IO.Ports;
 using System.Linq;
 using System.Text;
@@ -272,14 +273,37 @@ namespace BirdManagementSystem
             }
             if (flag)
             {
-                var bird = from b in db.Birds
-                           where b.Id == self.Id
-                           select b;
-                Bird me = bird.ToList()[0];
-                me.SerialNumber = newBirdSN;
-                me.Cage = newCageSN;
+              
+                IQueryable<Bird> birdsToChange;
+                if (self.Gender == "Female")
+                {
+                    birdsToChange = from b in db.Birds
+                                    where b.Mother == self.SerialNumber
+                                    select b;
+                }
+                else
+                {
+                    birdsToChange = from b in db.Birds
+                                    where b.Father == self.SerialNumber
+                                    select b;
+
+                }
+                foreach (Bird b in birdsToChange.ToList())
+                {
+                    if (self.Gender == "Female")
+                    {
+                        b.Mother = newBirdSN;
+                    }
+                    else
+                    {
+                        b.Father = newBirdSN;
+                    }
+                }
+
+                self.SerialNumber = newBirdSN;
+                self.Cage = newCageSN;
                 db.SaveChanges();
-                BirdWindow page = new BirdWindow(me);
+                BirdWindow page = new BirdWindow(self);
                 page.Show();
                 this.Close();
             }
