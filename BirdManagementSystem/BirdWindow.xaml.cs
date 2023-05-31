@@ -88,7 +88,7 @@ namespace BirdManagementSystem
             this.ParentError.Text = "";
             this.SerialError.Text = "";
             string sn = this.FatherSerial.Text + this.MotherSerial.Text;
-            if (!checkSN(this.BirdSerialNumber.Text) || !(checkSN(sn)) || this.SerialError.Text != "" || !this.HatchDate.SelectedDate.HasValue || this.BirdGender.SelectedIndex == -1)
+            if (!checkSN(this.BirdSerialNumber.Text) || !(checkSN(sn)) || this.SerialError.Text != "" || !this.HatchDate.SelectedDate.HasValue || this.BirdGender.SelectedIndex == -1 || birdExists(BirdSerialNumber.Text))
             {
                 if (!this.HatchDate.SelectedDate.HasValue)
                 {
@@ -115,6 +115,8 @@ namespace BirdManagementSystem
                         this.ParentError.Text = "SN must consist only digits";
                     }
                 }
+                if (birdExists(BirdSerialNumber.Text))
+                    this.SerialError.Text = "Bird Already Exists";
                 flag = false;
             }
             if (flag)
@@ -123,6 +125,7 @@ namespace BirdManagementSystem
                 var docs = from b in db.Birds
                            where b.SerialNumber == sn
                            select b;
+                
                 if (docs.ToList().Count() == 0)
                 {
                     this.ParentError.Text = "SN not found";

@@ -38,6 +38,7 @@ namespace BirdManagementSystem
         {
             InitializeComponent();
             HatchDate.DisplayDateEnd = DateTime.Now;
+            BirdHatchDate.DisplayDateEnd = DateTime.Now;
             db = new BirdManagementDBEntities();
         }
         private void ExitBtn_Click(object sender, RoutedEventArgs e)
@@ -588,6 +589,7 @@ namespace BirdManagementSystem
             
         private void SearchBirdBtn_Click(object sender, RoutedEventArgs e)
         {
+
             bool InfoFound = false;
             string SelectedBirdSpecies;
             string SelectedBirdGender;

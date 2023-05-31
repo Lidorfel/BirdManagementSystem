@@ -13,6 +13,7 @@ using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Documents;
 using System.Windows.Input;
+using System.Windows.Markup;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
@@ -76,6 +77,11 @@ namespace BirdManagementSystem
                 errorMessage = "Password should contain at least a number and a letter and a symbol";
                 flag = true;
             }
+            if(!flag && IDExists(id))
+            {
+                errorMessage = "id already exists";
+                flag = true;
+            }
 
             if (flag)
             {
@@ -123,6 +129,25 @@ namespace BirdManagementSystem
             this.Close();
         }
 
+        private bool IDExists(string id)
+        {
+            string filePath = @"..\..\Users.xlsx";
+            ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
+
+            using (var package = new ExcelPackage(new FileInfo(filePath)))
+            {
+                var worksheet = package.Workbook.Worksheets[0];
+
+                // Assuming the data starts at row 2 to skip the header row
+                for (int row = 2; row <= worksheet.Dimension.End.Row; row++)
+                {
+                    string id1 = worksheet.Cells[row, 3].Value?.ToString();
+                    if (id1 != null && id1 == id)
+                        return true;
+                }
+            }
+            return false;
+        }
         private bool UserExists(string username)
         {
             var filePath = @"..\..\Users.xlsx";
